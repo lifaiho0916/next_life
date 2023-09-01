@@ -23,13 +23,16 @@ class _HomePageState extends State<HomePage> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
+                const SizedBox(height: 30.0),
                 GestureDetector(
-                  onTap: () async {},
+                  onTap: () async {
+                    widget.onGoToPage(9);
+                  },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: 40,
+                    height: 50,
                     padding: const EdgeInsets.only(left: 15.0),
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: const Color(0xFF237A6A),
@@ -57,12 +60,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () async {},
+                  onTap: () async {
+
+                  },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: 40,
+                    height: 50,
                     padding: const EdgeInsets.only(left: 15.0),
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: const Color(0xFF237A6A),
@@ -90,12 +95,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () async {},
+                  onTap: () async {
+                    widget.onGoToPage(17);
+                  },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: 40,
+                    height: 50,
                     padding: const EdgeInsets.only(left: 15.0),
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: const Color(0xFF237A6A),
@@ -123,12 +130,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () async {},
+                  onTap: () async {
+                    widget.onGoToPage(16);
+                  },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: 40,
+                    height: 50,
                     padding: const EdgeInsets.only(left: 15.0),
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: const Color(0xFF237A6A),
@@ -156,12 +165,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () async {},
+                  onTap: () async {
+                    widget.onGoToPage(15);
+                  },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: 40,
+                    height: 50,
                     padding: const EdgeInsets.only(left: 15.0),
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: const Color(0xFF237A6A),
@@ -192,9 +203,9 @@ class _HomePageState extends State<HomePage> {
                   onTap: () async {},
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: 40,
+                    height: 50,
                     padding: const EdgeInsets.only(left: 15.0),
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: const Color(0xFF237A6A),
@@ -227,9 +238,9 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: 40,
+                    height: 50,
                     padding: const EdgeInsets.only(left: 15.0),
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: const Color(0xFF237A6A),

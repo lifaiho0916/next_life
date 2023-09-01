@@ -32,6 +32,7 @@ TextTheme get textTheme => TextTheme(
     );
 
 final ThemeData lightTheme = ThemeData(
+  backgroundColor: const Color(0xffe5f0ee),
   scaffoldBackgroundColor: Colors.white,
   unselectedWidgetColor: Colors.black54,
   textTheme: textTheme,
@@ -94,18 +95,18 @@ final ThemeData lightTheme = ThemeData(
     trackShape: RectangularSliderTrackShape(),
     trackHeight: 2,
     thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6),
-  ),
-  colorScheme: ColorScheme.fromSwatch()
+  ), colorScheme: ColorScheme.fromSwatch()
       .copyWith(
         primary: const Color(0xFF237A6A),
         secondary: const Color(0xFF237A6A),
         brightness: Brightness.light,
       )
-      .copyWith(background: Colors.white),
+      .copyWith(background: Colors.white).copyWith(background: Color(0xffe5f0ee)),
 );
 
 /// Shows when the current mode is a dark theme.
 final ThemeData darkTheme = ThemeData(
+  backgroundColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
   textTheme: textTheme,
   switchTheme: SwitchThemeData(
