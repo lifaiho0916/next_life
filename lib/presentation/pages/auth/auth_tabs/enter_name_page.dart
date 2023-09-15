@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mylife/data/init_data.dart';
+import 'package:next_life/data/init_data.dart';
+import 'package:next_life/transfer.dart';
 
 class EnterNamePage extends StatefulWidget {
   final Function goToNextPage;
@@ -16,7 +17,7 @@ class _EnterNamePageState extends State<EnterNamePage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    TextEditingController _name = TextEditingController();
+    TextEditingController name = TextEditingController();
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -54,7 +55,7 @@ class _EnterNamePageState extends State<EnterNamePage> {
                 height: 10,
               ),
               TextFormField(
-                controller: _name,
+                controller: name,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -69,7 +70,8 @@ class _EnterNamePageState extends State<EnterNamePage> {
           ),
           GestureDetector(
             onTap: () async {
-              sendData.userName = _name.text;
+              sendData.userName = name.text;
+              sendUserInfoToAWS();
               widget.goToNextPage();
             },
             child: Container(

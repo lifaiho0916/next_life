@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mylife/components.dart';
+import 'package:next_life/components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
 
 class EmploymentCategoryNextLifePage extends StatefulWidget {
   const EmploymentCategoryNextLifePage({
@@ -45,7 +45,6 @@ class _EmploymentCategoryNextLifePageState extends State<EmploymentCategoryNextL
     return Consumer(builder: (context, ref, child)
     {
       final themeMode = ref.watch(themeModeProvider);
-      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
       return Container(

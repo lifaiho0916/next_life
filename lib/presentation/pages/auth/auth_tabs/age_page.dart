@@ -3,7 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mylife/data/init_data.dart';
+import 'package:next_life/data/init_data.dart';
+import 'package:next_life/transfer.dart';
 
 class AgePage extends StatefulWidget {
   final Function goToNextPage;
@@ -27,64 +28,68 @@ class _AgePageState extends State<AgePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: size.width,
-                child: Text(
-                  "How old are you?",
-                  style: GoogleFonts.jotiOne(
-                    fontSize: 30,
-                    color: const Color.fromRGBO(41, 137, 119, 1),
-                    letterSpacing: 4,
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: size.width,
+                  child: Text(
+                    "How old are you?",
+                    style: GoogleFonts.jotiOne(
+                      fontSize: 30,
+                      color: const Color.fromRGBO(41, 137, 119, 1),
+                      letterSpacing: 4,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
-                  textAlign: TextAlign.left,
                 ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Container(
-                height: 200,
-                width: size.width,
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(229, 240, 238, 1),
-                  border: Border.all(
-                    color: const Color.fromRGBO(35, 122, 106, 1),
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
+                const SizedBox(
+                  height: 40,
                 ),
-                child: CupertinoPicker(
-                  itemExtent: 30,
-                  scrollController: FixedExtentScrollController(
-                    initialItem: 1,
+                Container(
+                  height: 200,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(229, 240, 238, 1),
+                    border: Border.all(
+                      color: const Color.fromRGBO(35, 122, 106, 1),
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  children: [
-                    for (int age in ages)
-                      Text(
-                        "$age",
-                        style: GoogleFonts.jotiOne(
-                          fontSize: 20,
-                          color: const Color.fromRGBO(41, 137, 119, 1),
-                          letterSpacing: 4,
+                  child: CupertinoPicker(
+                    itemExtent: 30,
+                    scrollController: FixedExtentScrollController(
+                      initialItem: 1,
+                    ),
+                    children: [
+                      for (int age in ages)
+                        Text(
+                          "$age",
+                          style: GoogleFonts.jotiOne(
+                            fontSize: 20,
+                            color: const Color.fromRGBO(41, 137, 119, 1),
+                            letterSpacing: 4,
+                          ),
+                          textAlign: TextAlign.left,
                         ),
-                        textAlign: TextAlign.left,
-                      ),
-                  ],
-                  onSelectedItemChanged: (int value) {
-                    setState(() {
-                      selectedAge = ages[value];
-                    });
-                  },
-                ),
-              )
-            ],
+                    ],
+                    onSelectedItemChanged: (int value) {
+                      setState(() {
+                        selectedAge = ages[value];
+                      });
+                    },
+                  ),
+                )
+              ],
+            )
           ),
           GestureDetector(
             onTap: () async {
+              FocusScope.of(context).unfocus();
               sendData.age = selectedAge;
+              sendUserInfoToAWS();
               widget.goToNextPage();
             },
             child: Container(

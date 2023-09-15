@@ -1,6 +1,6 @@
 {
-    "name": "mylife",
-    "short_name": "mylife",
+    "name": "next_life",
+    "short_name": "next_life",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

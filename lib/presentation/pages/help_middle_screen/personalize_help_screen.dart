@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mylife/data/constants/color.dart';
+import 'package:next_life/data/constants/color.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
 
 class PersonalizeHelpScreen extends StatelessWidget {
   const PersonalizeHelpScreen({
@@ -12,10 +10,6 @@ class PersonalizeHelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      final themeMode = ref.watch(themeModeProvider);
-      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
-      Color backgroundColor = themeMode == 0 ? lightTheme
-          .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
       return SafeArea(
         child: Scaffold(
           backgroundColor: BGColor.bgColor,

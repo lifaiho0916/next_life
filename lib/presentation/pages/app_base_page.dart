@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/pages.dart';
-import 'package:mylife/constants.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/presentation/pages/drawer.dart';
-import 'package:mylife/presentation/pages/my_life/my_life_profile_page.dart';
-import 'package:mylife/presentation/pages/my_life/my_next_life_profile_page.dart';
-import 'package:mylife/presentation/pages/my_life/the_path_profile_page.dart';
-import 'package:mylife/presentation/pages/path_finder/path_personalized_plan_page.dart';
-import 'package:mylife/data/init_data.dart';
+import 'package:next_life/pages.dart';
+import 'package:next_life/constants.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/presentation/pages/drawer.dart';
+import 'package:next_life/presentation/pages/my_life/the_path_profile_page.dart';
+import 'package:next_life/presentation/pages/path_finder/path_personalized_plan_page.dart';
+import 'package:next_life/data/init_data.dart';
 
 class BasePage extends StatefulWidget {
   const BasePage({Key? key}) : super(key: key);
@@ -19,7 +17,6 @@ class BasePage extends StatefulWidget {
 }
 
 class _BasePageState extends State<BasePage> {
-  int? _selectedProfileIdx;
   late List<int> _pageHistory;
   int _currentPageIndex = 0;
   final PageController _pageController = PageController();
@@ -33,12 +30,11 @@ class _BasePageState extends State<BasePage> {
     super.initState();
     _pageHistory = [0];
     _expandableController = ExpandableController(initialExpanded: true);
-    greeting = 'welcome ${sendData.userName}';
+    greeting = 'Welcome ${sendData.userName}';
   }
 
   @override
   Widget build(BuildContext context) {
-    greeting = 'welcome ${sendData.userName}';
     return Consumer(builder: (context, ref, child) {
       final themeMode = ref.watch(themeModeProvider);
       return Scaffold(
@@ -46,8 +42,8 @@ class _BasePageState extends State<BasePage> {
         key: scaffoldKey,
         // backgroundColor: const Color(0xffe5f0ee),
         backgroundColor: themeMode == 0
-            ? lightTheme.backgroundColor
-            : darkTheme.backgroundColor,
+            ? lightTheme.colorScheme.background
+            : darkTheme.colorScheme.background,
         appBar: buildAppBar(),
         body: Column(
           children: <Widget>[
@@ -83,9 +79,9 @@ class _BasePageState extends State<BasePage> {
                   DetailPathInfoPage(onGoToPage: goToPage),
                   PathSettingPage(onGoToPage: goToPage),
                   PathPersonalizedPlanPage(onGoToPage: goToPage),
-                  MyNextLifeProfilePage(onGoToPage: goToPage),
+                  // MyNextLifeProfilePage(onGoToPage: goToPage),
                   ThePathProfilePage(onGoToPage: goToPage),
-                  MyLifeProfilePage(onGoToPage: goToPage),
+                  // MyLifeProfilePage(onGoToPage: goToPage),
                 ],
                 onPageChanged: (value) {
                   _currentPageIndex = value;
@@ -120,8 +116,8 @@ class _BasePageState extends State<BasePage> {
       padding: const EdgeInsets.only(left: 15.0),
       child: GestureDetector(
         onTap: () {
-          scaffoldKey.currentState?.openDrawer();
-          // goToPage(1);
+          // scaffoldKey.currentState?.openDrawer();
+          goToPage(1);
         },
         child: const CircleAvatar(
           backgroundColor: Colors.white,
@@ -133,6 +129,7 @@ class _BasePageState extends State<BasePage> {
   }
 
   Widget buildTitle() {
+    greeting = 'Welcome ${sendData.userName}';
     return Padding(
       padding: const EdgeInsets.only(left: 5.0),
       child: Text(

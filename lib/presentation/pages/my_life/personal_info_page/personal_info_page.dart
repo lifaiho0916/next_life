@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
-import 'package:mylife/presentation/pages/my_life/personal_info_page/add_account_dialog_page.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
+import 'package:next_life/presentation/pages/my_life/personal_info_page/add_account_dialog_page.dart';
+import 'package:next_life/data/init_data.dart';
+
+
 class PersonalInfoPage extends StatefulWidget {
   const PersonalInfoPage({Key? key}) : super(key: key);
+
 
   @override
   State<PersonalInfoPage> createState() => _PersonalInfoPageState();
 }
 
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
@@ -34,24 +44,24 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               ),
               child: Column(
                 children: <Widget>[
-                  const Row(
+                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
+                          const Text(
                             'Username',
-                            style: TextStyle(
+                            style:  TextStyle(
                               color: Color(0xFF414C57),
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(height: 3.0),
+                          const SizedBox(height: 3.0),
                           Text(
-                            'Rohan01',
-                            style: TextStyle(
+                            sendData.userName,
+                            style: const TextStyle(
                               color: Color(0xFF237A6A),
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -62,7 +72,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Text(
+                          const Text(
                             'Age',
                             style: TextStyle(
                               color: Color(0xFF414C57),
@@ -70,10 +80,11 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(height: 3.0),
+                          const SizedBox(height: 3.0),
                           Text(
-                            '24 years',
-                            style: TextStyle(
+                            '${sendData.age} years',
+                            // sendData.age,
+                            style: const TextStyle(
                               color: Color(0xFF237A6A),
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -84,13 +95,13 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                     ],
                   ),
                   const SizedBox(height: 18.0),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
+                          const Text(
                             'E-mail',
                             style: TextStyle(
                               color: Color(0xFF414C57),
@@ -98,10 +109,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(height: 3.0),
+                          const SizedBox(height: 3.0),
                           Text(
-                            'Rohan01@mail.com',
-                            style: TextStyle(
+                            sendData.email,
+                            style: const TextStyle(
                               color: Color(0xFF237A6A),
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -112,7 +123,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Text(
+                          const Text(
                             'Gender',
                             style: TextStyle(
                               color: Color(0xFF414C57),
@@ -120,10 +131,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(height: 3.0),
+                          const SizedBox(height: 3.0),
                           Text(
-                            'Male',
-                            style: TextStyle(
+                            sendData.gender,
+                            style: const TextStyle(
                               color: Color(0xFF237A6A),
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -303,7 +314,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   ),
                   const SizedBox(height: 21.0),
                   GestureDetector(
-                    onTap: () async {},
+                    onTap: () async {
+                      // Navigator.pushNamed(context, "/livingSituation");
+                    },
                     child: Container(
                       width: 145,
                       height: 39,

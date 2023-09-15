@@ -1,9 +1,11 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
-import 'package:mylife/data/init_data.dart';
-import 'package:mylife/transfer.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
+import 'package:next_life/data/init_data.dart';
+import 'package:next_life/transfer.dart';
 
 class GenderPage extends StatefulWidget {
   const GenderPage({

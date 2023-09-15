@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mylife/pages.dart';
+import 'package:next_life/pages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ThePathProfilePage extends StatefulWidget {

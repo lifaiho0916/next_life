@@ -2,12 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/components.dart';
-import 'package:mylife/pages.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
-import 'package:mylife/data/init_data.dart';
-import 'package:intl/intl.dart';
+import 'package:next_life/components.dart';
+import 'package:next_life/pages.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
+import 'package:next_life/data/init_data.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({
@@ -32,16 +31,15 @@ class _AccountPageState extends State<AccountPage> {
 
     _passwordController = TextEditingController(text: 'Password');
     current_userName = sendData.userName;
-    current_dob = Converters.convertDateTimeToDateString(
-        DateTime.parse(sendData.day_of_birth));
+    current_dob='';
+    current_dob = sendData.day_of_birth;
     current_gender = sendData.gender;
   }
 
   @override
   Widget build(BuildContext context) {
     current_userName = sendData.userName;
-    current_dob = Converters.convertDateTimeToDateString(
-        DateTime.parse(sendData.day_of_birth));
+    current_dob = sendData.day_of_birth;
     current_gender = sendData.gender;
     return Consumer(builder: (context, ref, child) {
       final themeMode = ref.watch(themeModeProvider);
@@ -73,7 +71,7 @@ class _AccountPageState extends State<AccountPage> {
                         CircleAvatar(
                           backgroundColor: backgroundColor,
                           radius: 45,
-                          backgroundImage: AssetImage('assets/meta/avatar.jpg'),
+                          backgroundImage: const AssetImage('assets/meta/avatar.jpg'),
                         ),
                         Container(
                           width: 90,

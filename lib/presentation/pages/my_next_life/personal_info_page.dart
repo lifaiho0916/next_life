@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PersonalInfoNextLifePage extends StatefulWidget {
@@ -14,273 +14,47 @@ class PersonalInfoNextLifePage extends StatefulWidget {
 class _PersonalInfoNextLifePageState extends State<PersonalInfoNextLifePage> {
   @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, child) {
+    return Consumer(builder: (context, ref, child)
+    {
       final themeMode = ref.watch(themeModeProvider);
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+
       return SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            const SizedBox(height: 20.0),
-            SizedBox(
-              child: Text(
-                "First answer the question below",
-                style: GoogleFonts.jotiOne(
-                  fontSize: 30,
-                  color: const Color.fromRGBO(41, 137, 119, 1),
-                  letterSpacing: 4,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 50.0),
-            Container(
-              padding: const EdgeInsets.all(20),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                shape: BoxShape.rectangle,
-                border: Border.all(
-                  color: const Color(0xFF84C1B6),
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: Column(
-                children: <Widget>[
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Username',
-                            style: TextStyle(
-                              color: Color(0xFF414C57),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 3.0),
-                          Text(
-                            'Rohan01',
-                            style: TextStyle(
-                              color: Color(0xFF237A6A),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            'Age',
-                            style: TextStyle(
-                              color: Color(0xFF414C57),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 3.0),
-                          Text(
-                            '24 years',
-                            style: TextStyle(
-                              color: Color(0xFF237A6A),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18.0),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'E-mail',
-                            style: TextStyle(
-                              color: Color(0xFF414C57),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 3.0),
-                          Text(
-                            'Rohan01@mail.com',
-                            style: TextStyle(
-                              color: Color(0xFF237A6A),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            'Gender',
-                            style: TextStyle(
-                              color: Color(0xFF414C57),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 3.0),
-                          Text(
-                            'Male',
-                            style: TextStyle(
-                              color: Color(0xFF237A6A),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18.0),
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Column(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget> [
                   Container(
-                    height: 1,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFBDDED8),
+                    padding: const EdgeInsets.all(20.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: backgroundColor,
                       shape: BoxShape.rectangle,
+                      border: Border.all(
+                        color: const Color(0xFF84C1B6),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: const Text('',
+                      style: TextStyle(height: 20),
                     ),
                   ),
-                  const SizedBox(height: 18.0),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Twitter',
-                        style: TextStyle(
-                          color: Color(0xFF414C57),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        'Add account',
-                        style: TextStyle(
-                          color: Color(0xFF237A6A),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18.0),
-                  Container(
-                    height: 1,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFBDDED8),
-                      shape: BoxShape.rectangle,
-                    ),
-                  ),
-                  const SizedBox(height: 18.0),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Facebook',
-                        style: TextStyle(
-                          color: Color(0xFF414C57),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        'Add account',
-                        style: TextStyle(
-                          color: Color(0xFF237A6A),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18.0),
-                  Container(
-                    height: 1,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFBDDED8),
-                      shape: BoxShape.rectangle,
-                    ),
-                  ),
-                  const SizedBox(height: 18.0),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Instagram',
-                        style: TextStyle(
-                          color: Color(0xFF414C57),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        'Add account',
-                        style: TextStyle(
-                          color: Color(0xFF237A6A),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18.0),
-                  Container(
-                    height: 1,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFBDDED8),
-                      shape: BoxShape.rectangle,
-                    ),
-                  ),
-                  const SizedBox(height: 18.0),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'TikTok',
-                        style: TextStyle(
-                          color: Color(0xFF414C57),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        'Add account',
-                        style: TextStyle(
-                          color: Color(0xFF237A6A),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18.0),
-                  Container(
-                    height: 1,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFBDDED8),
-                      shape: BoxShape.rectangle,
-                    ),
-                  ),
-                  const SizedBox(height: 21.0),
+                  const SizedBox(height: 35.0,),
                   GestureDetector(
-                    onTap: () async {},
+                    onTap: () async {
+                      // widget.onGoToPage(0);
+                    },
                     child: Container(
-                      width: 145,
                       height: 39,
+                      width: MediaQuery.of(context).size.width * 0.3,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: const Color(0xFF237A6A),
@@ -301,12 +75,83 @@ class _PersonalInfoNextLifePageState extends State<PersonalInfoNextLifePage> {
                       ),
                     ),
                   ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: <Widget>[
+                  //     Expanded(
+                  //       flex: 3,
+                  //       child: GestureDetector(
+                  //         onTap: () async {
+                  //           // widget.onGoToPage(0);
+                  //         },
+                  //         child: Container(
+                  //           height: 39,
+                  //           alignment: Alignment.center,
+                  //           decoration: BoxDecoration(
+                  //             color: const Color(0xFF237A6A),
+                  //             shape: BoxShape.rectangle,
+                  //             border: Border.all(
+                  //               color: const Color(0xFF7EBEB2),
+                  //               width: 2,
+                  //             ),
+                  //             borderRadius: BorderRadius.circular(10.0),
+                  //           ),
+                  //           child: const Text(
+                  //             'Save',
+                  //             style: TextStyle(
+                  //               color: Colors.white,
+                  //               fontSize: 14,
+                  //               fontWeight: FontWeight.w500,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     SizedBox(
+                  //       width: MediaQuery
+                  //           .of(context)
+                  //           .size
+                  //           .width * 0.05,
+                  //     ),
+                  //     Expanded(
+                  //       flex: 4,
+                  //       child: GestureDetector(
+                  //         onTap: () async {
+                  //           // widget.onGoToPage(13);
+                  //         },
+                  //         child: Container(
+                  //           height: 39,
+                  //           alignment: Alignment.center,
+                  //           decoration: BoxDecoration(
+                  //             color: backgroundColor,
+                  //             shape: BoxShape.rectangle,
+                  //             border: Border.all(
+                  //               color: const Color(0xFF84C1B6),
+                  //               width: 1,
+                  //             ),
+                  //             borderRadius: BorderRadius.circular(10.0),
+                  //           ),
+                  //           child: const Text(
+                  //             'Next',
+                  //             style: TextStyle(
+                  //               color: Color(0xFF237A6A),
+                  //               fontSize: 14,
+                  //               fontWeight: FontWeight.w500,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // )
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+
       );
+
     });
   }
 }

@@ -1,9 +1,9 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
-import 'package:mylife/data/init_data.dart';
-import 'package:mylife/transfer.dart';
+import 'package:next_life/data/init_data.dart';
+import 'package:next_life/transfer.dart';
 
 class UsernamePage extends StatefulWidget {
   const UsernamePage({
@@ -33,10 +33,6 @@ class _UsernamePageState extends State<UsernamePage> {
   Widget build(BuildContext context) {
     currnet_userName = sendData.userName;
     return Consumer(builder: (context, ref, child) {
-      final themeMode = ref.watch(themeModeProvider);
-      Color backgroundColor = themeMode == 0
-          ? lightTheme.scaffoldBackgroundColor
-          : darkTheme.scaffoldBackgroundColor;
       return WillPopScope(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -137,8 +133,8 @@ class _UsernamePageState extends State<UsernamePage> {
                       GestureDetector(
                         onTap: () async {
                           sendData.userName = _usernameController.text;
-                          sendUserInfoToAWS();
-                          widget.onGoToPage(2);
+                          await sendUserInfoToAWS();
+                          Navigator.pushNamed(context, "/");
                         },
                         child: Container(
                           height: 42,

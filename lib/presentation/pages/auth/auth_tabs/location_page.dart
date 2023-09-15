@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mylife/data/init_data.dart';
+import 'package:next_life/data/init_data.dart';
+import 'package:next_life/transfer.dart';
 
 class ZipCodePage extends StatefulWidget {
   final Function goToNextPage;
@@ -16,7 +17,7 @@ class _ZipCodePageState extends State<ZipCodePage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    TextEditingController _location = TextEditingController();
+    TextEditingController location = TextEditingController();
     return Container(
       padding: const EdgeInsets.all(20),
       margin: EdgeInsets.only(top: size.height * 0.12, bottom: 30),
@@ -53,7 +54,7 @@ class _ZipCodePageState extends State<ZipCodePage> {
                 height: 10,
               ),
               TextFormField(
-                controller: _location,
+                controller: location,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -68,7 +69,8 @@ class _ZipCodePageState extends State<ZipCodePage> {
           ),
           GestureDetector(
             onTap: () async {
-              sendData.location = _location.text;
+              sendData.location = location.text;
+              sendUserInfoToAWS();
               widget.goToNextPage();
             },
             child: Container(

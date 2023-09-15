@@ -1,5 +1,5 @@
-import 'package:mylife/domain/entities/user.dart';
-import 'package:mylife/domain/repositories/user_repository.dart';
+import 'package:next_life/domain/entities/user.dart';
+import 'package:next_life/domain/repositories/user_repository.dart';
 
 class GetCurrentUser {
   late UserRepository repository;

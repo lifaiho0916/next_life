@@ -1,10 +1,12 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
-import 'package:mylife/components.dart';
+import 'package:next_life/components.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
 
 class AvatarDialogPage extends StatefulWidget {
   const AvatarDialogPage({Key? key}) : super(key: key);
@@ -18,7 +20,7 @@ class _AvatarDialogPageState extends State<AvatarDialogPage> {
   String _avatarImagePath = "";
   final imagePicker = ImagePicker();
   Future getImageFromGallery() async {
-    final pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -29,7 +31,7 @@ class _AvatarDialogPageState extends State<AvatarDialogPage> {
 
   //Image Picker function to get image from camera
   Future getImageFromCamera() async {
-    final pickedFile = await imagePicker.getImage(source: ImageSource.camera);
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
       if (pickedFile != null) {

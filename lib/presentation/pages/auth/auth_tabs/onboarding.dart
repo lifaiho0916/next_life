@@ -1,10 +1,10 @@
 import "package:flutter/material.dart";
-import "package:mylife/presentation/pages/auth/auth_tabs/PathFinderpage.dart";
-import "package:mylife/presentation/pages/auth/auth_tabs/age_page.dart";
-import "package:mylife/presentation/pages/auth/auth_tabs/enter_name_page.dart";
-import "package:mylife/presentation/pages/auth/auth_tabs/profession_page.dart";
-import "package:mylife/presentation/pages/auth/auth_tabs/second_tab_page.dart";
-import 'package:mylife/presentation/pages/auth/auth_tabs/location_page.dart';
+import 'package:next_life/presentation/pages/auth/auth_tabs/pathfinderpage.dart';
+import "package:next_life/presentation/pages/auth/auth_tabs/age_page.dart";
+import "package:next_life/presentation/pages/auth/auth_tabs/enter_name_page.dart";
+import "package:next_life/presentation/pages/auth/auth_tabs/profession_page.dart";
+import "package:next_life/presentation/pages/auth/auth_tabs/second_tab_page.dart";
+import 'package:next_life/presentation/pages/auth/auth_tabs/location_page.dart';
 import 'package:onboarding_animation/onboarding_animation.dart';
 import "./first_tab_page.dart";
 
@@ -15,7 +15,7 @@ class OnBoarding extends StatelessWidget {
   Widget build(BuildContext context) {
     PageController controller = PageController();
 
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 1), () {
       controller.animateToPage(
         1,
         duration: const Duration(milliseconds: 500),
@@ -23,7 +23,7 @@ class OnBoarding extends StatelessWidget {
       );
     });
 
-    Future.delayed(const Duration(seconds: 6), () {
+    Future.delayed(const Duration(seconds: 3), () {
       controller.animateToPage(
         2,
         duration: const Duration(milliseconds: 500),

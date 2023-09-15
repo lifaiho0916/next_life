@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mylife/components.dart';
+import 'package:next_life/components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
 class DegreeEarnedDialogNextLifePage extends StatefulWidget {
   const DegreeEarnedDialogNextLifePage({Key? key}) : super(key: key);
 

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:mylife/domain/entities/user.dart';
+import 'package:next_life/domain/entities/user.dart';
 
 class UserModel extends Equatable {
   const UserModel({

@@ -1,7 +1,8 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
 
 class AppearancePage extends StatefulWidget {
   const AppearancePage({
@@ -68,7 +69,7 @@ class _AppearancePageState extends State<AppearancePage> {
                             GestureDetector(
                               onTap: () {
                                 setSelectedModeValue(0);
-                                print("Here is to set the light mode");
+                                safePrint("Here is to set the light mode");
                                 ref.read(themeModeProvider.notifier).state = 0;
                               },
                               child: Column(
@@ -98,7 +99,7 @@ class _AppearancePageState extends State<AppearancePage> {
                             GestureDetector(
                               onTap: () {
                                 setSelectedModeValue(1);
-                                print("Here is to set the dark mode");
+                                safePrint("Here is to set the dark mode");
                                 ref.read(themeModeProvider.notifier).state = 1;
                               },
                               child: Column(

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
+import 'package:next_life/data/init_data.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'dart:convert';
 
 class PathFinderReportPage extends StatefulWidget {
   const PathFinderReportPage({
@@ -17,10 +21,70 @@ class PathFinderReportPage extends StatefulWidget {
   State<PathFinderReportPage> createState() => _PathFinderReportPageState();
 }
 
+
 class _PathFinderReportPageState extends State<PathFinderReportPage> {
+
+  List<String> AnswerResponse = [];
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
+    getAnswerData();
+  }
+
+  Future<void> getAnswerData() async {
+    setState(() {
+      isLoading = true; // Show loading spinner
+    });
+    var data = {
+      "prompt":sendData.survey,
+      "age":"30",
+      "questionsAreAnsrwered":true,
+      "answersToQuestions":sendData.answer,
+      "generateLifePlan":false,
+      "lifePlanDataRequest":""
+    };
+    const apiUrl =
+        "https://e5120pdd9j.execute-api.us-east-1.amazonaws.com/default/ynlAIControler";
+    final headers = {'Content-Type': 'application/json'};
+    final response = await http.post(Uri.parse(apiUrl),
+        headers: headers, body: jsonEncode(data));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      String dataResponse = data['response'];
+      setState(() {
+        RegExp regex = RegExp(r'\d+\.\s+(.+)(?=\n\d+\.\s+|$)');
+        Iterable<Match> matches = regex.allMatches(dataResponse);
+        isLoading = false;
+        for (Match match in matches) {
+          AnswerResponse.add(match.group(1)!.trim());
+        }
+        print("--------------------");
+        print (AnswerResponse[0]);
+        print (AnswerResponse[1]);
+        print (AnswerResponse[2]);
+        print (AnswerResponse[3]);
+        print (AnswerResponse[4]);
+      });
+      safePrint(response);
+    } else {
+      safePrint('error occured. ${response.body}');
+      setState(() {
+        isLoading = false; // Hide loading spinner in case of error
+      });
+    }
+  }
+
+  Widget buildLoadingWidget() {
+    return const Center(
+        child:Column(
+          children: [
+            SizedBox(height: 300.0,),
+            CircularProgressIndicator(),
+          ],
+        ) // You can customize this widget as needed
+    );
   }
 
   @override
@@ -36,7 +100,8 @@ class _PathFinderReportPageState extends State<PathFinderReportPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
+              if (isLoading) buildLoadingWidget(),
+              if (!isLoading) Column(
                 children: <Widget>[
                   const SizedBox(height: 20.0),
                   SizedBox(
@@ -101,9 +166,9 @@ class _PathFinderReportPageState extends State<PathFinderReportPage> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             alignment: Alignment.center,
-                            child: const Text(
-                              'Computer scientist',
-                              style: TextStyle(
+                            child:  Text(
+                              AnswerResponse[0],
+                              style: const TextStyle(
                                 color: Color(0xFF237A6A),
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
@@ -139,18 +204,20 @@ class _PathFinderReportPageState extends State<PathFinderReportPage> {
                                 alignment: Alignment.centerLeft,
                                 child: buildNoBadge(2, false),
                               ),
-                              Container(
+                              Expanded(child: Container(
                                 alignment: Alignment.center,
-                                child: const Text(
-                                  'Veterinary',
-                                  style: TextStyle(
+                                child: Text(
+                                  AnswerResponse[1],
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(
                                     color: Color(0xFF414C57),
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                              ),
+                              ),)
                             ],
                           ),
                         ),
@@ -182,18 +249,20 @@ class _PathFinderReportPageState extends State<PathFinderReportPage> {
                                 alignment: Alignment.centerLeft,
                                 child: buildNoBadge(3, false),
                               ),
-                              Container(
+                              Expanded(child: Container(
                                 alignment: Alignment.center,
-                                child: const Text(
-                                  'Doctor',
-                                  style: TextStyle(
+                                child: Text(
+                                  AnswerResponse[2],
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(
                                     color: Color(0xFF414C57),
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                              ),
+                              ),)
                             ],
                           ),
                         ),
@@ -226,18 +295,20 @@ class _PathFinderReportPageState extends State<PathFinderReportPage> {
                                 alignment: Alignment.centerLeft,
                                 child: buildNoBadge(4, false),
                               ),
-                              Container(
+                              Expanded(child: Container(
                                 alignment: Alignment.center,
-                                child: const Text(
-                                  'Firefighter',
-                                  style: TextStyle(
+                                child: Text(
+                                  AnswerResponse[3],
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(
                                     color: Color(0xFF414C57),
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                              ),
+                              ),)
                             ],
                           ),
                         ),
@@ -270,18 +341,20 @@ class _PathFinderReportPageState extends State<PathFinderReportPage> {
                                 alignment: Alignment.centerLeft,
                                 child: buildNoBadge(5, false),
                               ),
-                              Container(
+                              Expanded(child: Container(
                                 alignment: Alignment.center,
-                                child: const Text(
-                                  'Paramedic',
-                                  style: TextStyle(
+                                child: Text(
+                                  AnswerResponse[4],
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(
                                     color: Color(0xFF414C57),
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                              ),
+                              ),)
                             ],
                           ),
                         ),
@@ -290,7 +363,7 @@ class _PathFinderReportPageState extends State<PathFinderReportPage> {
                   ),
                 ],
               ),
-              GestureDetector(
+              if (!isLoading) GestureDetector(
                 onTap: () async {
                   widget.onGoToPage(10);
                 },

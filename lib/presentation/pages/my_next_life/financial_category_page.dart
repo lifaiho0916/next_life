@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mylife/pages.dart';
+import 'package:next_life/pages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
 
 class FinancialCategoryNextLifePage extends StatefulWidget {
   const FinancialCategoryNextLifePage({Key? key}) : super(key: key);
@@ -50,6 +50,7 @@ class _FinancialCategoryNextLifePageState extends State<FinancialCategoryNextLif
                     },
                     child: Container(
                       height: 40,
+                      width: MediaQuery.of(context).size.width * 0.5,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: const Color(0xFF237A6A),
@@ -70,69 +71,7 @@ class _FinancialCategoryNextLifePageState extends State<FinancialCategoryNextLif
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () async {
-                      if (context.mounted) {
-                        await showDialog(
-                          context: context,
-                          builder: (
-                              context) => const MonthlyExpenseDialogPage(),
-                        );
-                      }
-                    },
-                    child: Container(
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF237A6A),
-                        shape: BoxShape.rectangle,
-                        border: Border.all(
-                          color: const Color(0xFF7EBEB2),
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: const Text(
-                        'Monthly Expense',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      if (context.mounted) {
-                        await showDialog(
-                          context: context,
-                          builder: (context) => const TotalDebtDialogPage(),
-                        );
-                      }
-                    },
-                    child: Container(
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF237A6A),
-                        shape: BoxShape.rectangle,
-                        border: Border.all(
-                          color: const Color(0xFF7EBEB2),
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: const Text(
-                        'Total Debt',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             ),

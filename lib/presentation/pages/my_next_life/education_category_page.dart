@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mylife/pages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
 
 class EducationCategoryNextLifePage extends StatefulWidget {
   const EducationCategoryNextLifePage({
@@ -25,6 +24,8 @@ class _EducationCategoryNextLifePageState extends State<EducationCategoryNextLif
 
   @override
   Widget build(BuildContext context) {
+    bool _checkbox = false;
+    bool _checkboxListTile = false;
     return Consumer(builder: (context, ref, child)
     {
       final themeMode = ref.watch(themeModeProvider);
@@ -45,7 +46,7 @@ class _EducationCategoryNextLifePageState extends State<EducationCategoryNextLif
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Text(
                 'Do you want to pursue hinder education?',
@@ -55,6 +56,7 @@ class _EducationCategoryNextLifePageState extends State<EducationCategoryNextLif
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              const SizedBox(height: 15.0,),
               Column(
                 children: <Widget>[
                   Row(
@@ -62,7 +64,7 @@ class _EducationCategoryNextLifePageState extends State<EducationCategoryNextLif
                     children: [
                       Radio(
                         fillColor: MaterialStateProperty.all(
-                          Color.fromRGBO(35, 122, 106, 1),
+                          const Color.fromRGBO(35, 122, 106, 1),
                         ),
                         value: true,
                         groupValue: education,
@@ -77,7 +79,7 @@ class _EducationCategoryNextLifePageState extends State<EducationCategoryNextLif
                       Radio(
                         value: false,
                         fillColor: MaterialStateProperty.all(
-                          Color.fromRGBO(35, 122, 106, 1),
+                          const Color.fromRGBO(35, 122, 106, 1),
                         ),
                         groupValue: education,
                         onChanged: (value) {
@@ -92,10 +94,12 @@ class _EducationCategoryNextLifePageState extends State<EducationCategoryNextLif
                   const SizedBox(height: 2.0)
                 ],
               ),
+              const SizedBox(height: 15.0,),
               Container(
                 height: 1,  // Adjust the height to your preference
                 color:const Color(0xFF949494),
               ),
+              const SizedBox(height: 15.0,),
               Column(
                 children: <Widget>[
                   Container(
@@ -110,32 +114,33 @@ class _EducationCategoryNextLifePageState extends State<EducationCategoryNextLif
                     ),
                   ),
                   const SizedBox(height: 5.0),
-                  // Row(
-                  //   children: <Widget>[
-                  //     CheckboxListTile(
-                  //       value: checkedCollege,
-                  //       onChanged: (bool? value) {
-                  //         setState(() {
-                  //           checkedCollege = value!;
-                  //         });
-                  //       },
-                  //       title: const Text('Headline 1'),
-                  //       controlAffinity: ListTileControlAffinity.leading,  // Align checkbox to the left
-                  //     ),
-                  //     CheckboxListTile(
-                  //       value: checkedCollege,
-                  //       onChanged: (bool? value) {
-                  //         setState(() {
-                  //           checkedCollege = value!;
-                  //         });
-                  //       },
-                  //       title: const Text('Headline 2'),
-                  //       controlAffinity: ListTileControlAffinity.leading,  // Align checkbox to the left
-                  //     ),
-                  //   ],
-                  // )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Checkbox(
+                        value: _checkbox,
+                        onChanged: (value) {
+                          setState(() {
+                            _checkbox = !_checkbox;
+                          });
+                        },
+                      ),
+                      const Text("Yes"),
+                      const SizedBox(width: 65,),
+                      Checkbox(
+                        value: _checkbox,
+                        onChanged: (value) {
+                          setState(() {
+                            _checkbox = !_checkbox;
+                          });
+                        },
+                      ),
+                      const Text("No"),
+                    ],
+                  ),
                 ],
               ),
+              const SizedBox(height: 15.0,),
               GestureDetector(
                 onTap: () async {},
                 child: Container(

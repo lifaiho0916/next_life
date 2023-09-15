@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mylife/components.dart';
+import 'package:next_life/components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
-import 'package:mylife/data/init_data.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
+import 'package:next_life/data/init_data.dart';
 
 class PasswordPage extends StatefulWidget {
   const PasswordPage({
@@ -26,7 +26,7 @@ class _PasswordPageState extends State<PasswordPage> {
   @override
   void initState() {
     super.initState();
-    _currentPwdController = TextEditingController(text: '');
+    _currentPwdController = TextEditingController(text: sendData.password);
     _newPwdController = TextEditingController(text: '');
     _confirmPwdController = TextEditingController(text: '');
   }

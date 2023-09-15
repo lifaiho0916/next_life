@@ -47,7 +47,7 @@ class _ProfessionPageState extends State<ProfessionPage> {
                 children: [
                   Radio(
                     fillColor: MaterialStateProperty.all(
-                      Color.fromRGBO(35, 122, 106, 1),
+                      const Color.fromRGBO(35, 122, 106, 1),
                     ),
                     value: true,
                     groupValue: work,
@@ -61,7 +61,7 @@ class _ProfessionPageState extends State<ProfessionPage> {
                   Radio(
                     value: false,
                     fillColor: MaterialStateProperty.all(
-                      Color.fromRGBO(35, 122, 106, 1),
+                      const Color.fromRGBO(35, 122, 106, 1),
                     ),
                     groupValue: work,
                     onChanged: (value) {

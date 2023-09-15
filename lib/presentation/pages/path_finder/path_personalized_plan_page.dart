@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class PathPersonalizedPlanPage extends StatefulWidget {
   const PathPersonalizedPlanPage({
@@ -18,12 +21,58 @@ class PathPersonalizedPlanPage extends StatefulWidget {
 }
 
 class _PathPersonalizedPlanPageState extends State<PathPersonalizedPlanPage> {
-  late final TextEditingController _surveyController;
+  bool isLoading = true;
+  String schedule = '';
+
+  Future<void> getDataScheduleFromAWS() async {
+    setState(() {
+      isLoading = true; // Show loading spinner
+    });
+    var data = {
+      "prompt":"",
+      "age":"30",
+      "questionsAreAnsrwered":false,
+      "answersToQuestions":"",
+      "generateLifePlan":true,
+      "lifePlanDataRequest":""
+    };
+    const apiUrl =
+        "https://e5120pdd9j.execute-api.us-east-1.amazonaws.com/default/ynlAIControler";
+    final headers = {'Content-Type': 'application/json'};
+    final response = await http.post(Uri.parse(apiUrl),
+        headers: headers, body: jsonEncode(data));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      String scheduleResponse = data['response'];
+      setState(() {
+        schedule = scheduleResponse;
+        isLoading = false;
+      });
+      safePrint(response);
+    } else {
+      safePrint('error occured. ${response.body}');
+      setState(() {
+        isLoading = false; // Hide loading spinner in case of error
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _surveyController = TextEditingController();
+    getDataScheduleFromAWS();
+  }
+
+  Widget buildLoadingWidget() {
+    return const Center(
+        child:Column(
+          children: [
+            SizedBox(height: 300.0,),
+            CircularProgressIndicator(),
+          ],
+        ) // You can customize this widget as needed
+    );
   }
 
   @override
@@ -36,12 +85,13 @@ class _PathPersonalizedPlanPageState extends State<PathPersonalizedPlanPage> {
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
 
       return WillPopScope(
-        child: Container(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              Column(
+              if (isLoading) buildLoadingWidget(),
+              if (!isLoading) Column(
                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget> [
@@ -57,7 +107,7 @@ class _PathPersonalizedPlanPageState extends State<PathPersonalizedPlanPage> {
                      // textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 100.0),
+                  const SizedBox(height: 50.0),
                   Container(
                     padding: const EdgeInsets.all(20.0),
                     alignment: Alignment.center,
@@ -70,84 +120,83 @@ class _PathPersonalizedPlanPageState extends State<PathPersonalizedPlanPage> {
                       ),
                       borderRadius: BorderRadius.circular(20.0),
                     ),
-                    child: Text("",
-                      // controller: _surveyController,
-                      // maxLines: 13,
-                      style: TextStyle(color: textColor, height: 20),
+                    child: Text(schedule,
+                      style: TextStyle(color: textColor),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 3,
+                        child: GestureDetector(
+                          onTap: () async {
+                            widget.onGoToPage(0);
+                          },
+                          child: Container(
+                            height: 39,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF237A6A),
+                              shape: BoxShape.rectangle,
+                              border: Border.all(
+                                color: const Color(0xFF7EBEB2),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: const Text(
+                              'Save',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * 0.05,
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: GestureDetector(
+                          onTap: () async {
+                            widget.onGoToPage(13);
+                          },
+                          child: Container(
+                            height: 39,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: backgroundColor,
+                              shape: BoxShape.rectangle,
+                              border: Border.all(
+                                color: const Color(0xFF84C1B6),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: const Text(
+                              'Next',
+                              style: TextStyle(
+                                color: Color(0xFF237A6A),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
 
-                    ),
-                  ),
-                ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    flex: 3,
-                    child: GestureDetector(
-                      onTap: () async {
-                        widget.onGoToPage(0);
-                      },
-                      child: Container(
-                        height: 39,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF237A6A),
-                          shape: BoxShape.rectangle,
-                          border: Border.all(
-                            color: const Color(0xFF7EBEB2),
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: const Text(
-                          'Save',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.05,
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: GestureDetector(
-                      onTap: () async {
-                        widget.onGoToPage(13);
-                      },
-                      child: Container(
-                        height: 39,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: backgroundColor,
-                          shape: BoxShape.rectangle,
-                          border: Border.all(
-                            color: const Color(0xFF84C1B6),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: const Text(
-                          'Next',
-                          style: TextStyle(
-                            color: Color(0xFF237A6A),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
             ],
           ),
         ),

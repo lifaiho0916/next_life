@@ -1,11 +1,11 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, depend_on_referenced_packages, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
-import 'package:mylife/data/init_data.dart';
-import 'package:mylife/transfer.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
+import 'package:next_life/data/init_data.dart';
+import 'package:next_life/transfer.dart';
 import 'package:intl/intl.dart';
 import 'package:textfield_datepicker/textfield_datepicker.dart';
 
@@ -29,8 +29,7 @@ class _DobPageState extends State<DobPage> {
   @override
   void initState() {
     super.initState();
-    current_dob = Converters.convertDateTimeToDateString(
-        DateTime.parse(sendData.day_of_birth));
+    current_dob = sendData.day_of_birth;
     _birthDateController.text = current_dob;
   }
 
@@ -41,8 +40,7 @@ class _DobPageState extends State<DobPage> {
       Color backgroundColor = themeMode == 0
           ? lightTheme.scaffoldBackgroundColor
           : darkTheme.scaffoldBackgroundColor;
-      current_dob = Converters.convertDateTimeToDateString(
-          DateTime.parse(sendData.day_of_birth));
+      current_dob = sendData.day_of_birth;
       return WillPopScope(
           child: Padding(
             padding: const EdgeInsets.all(15.0),

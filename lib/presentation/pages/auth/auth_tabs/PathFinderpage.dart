@@ -1,9 +1,8 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, file_names
 
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mylife/transfer.dart';
+import 'package:next_life/transfer.dart';
 
 class PathFindPage extends StatefulWidget {
   const PathFindPage({Key? key}) : super(key: key);

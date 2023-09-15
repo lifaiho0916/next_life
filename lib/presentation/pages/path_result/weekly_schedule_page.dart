@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mylife/utils.dart';
+import 'package:next_life/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mylife/main.dart';
-import 'package:mylife/constants.dart';
+import 'package:next_life/main.dart';
+import 'package:next_life/constants.dart';
 class WeeklySchedulePage extends StatefulWidget {
   const WeeklySchedulePage({Key? key}) : super(key: key);
 
@@ -24,7 +24,6 @@ class _WeeklySchedulePageState extends State<WeeklySchedulePage> {
     return Consumer(builder: (context, ref, child)
     {
       final themeMode = ref.watch(themeModeProvider);
-      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
       return SingleChildScrollView(
