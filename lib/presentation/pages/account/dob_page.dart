@@ -2,9 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
-import 'package:next_life/constants.dart';
 import 'package:next_life/data/init_data.dart';
+import 'package:next_life/constants.dart';
 import 'package:next_life/transfer.dart';
 import 'package:intl/intl.dart';
 import 'package:textfield_datepicker/textfield_datepicker.dart';
@@ -36,10 +35,11 @@ class _DobPageState extends State<DobPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0
           ? lightTheme.scaffoldBackgroundColor
           : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       current_dob = sendData.day_of_birth;
       return WillPopScope(
           child: Padding(
@@ -58,10 +58,10 @@ class _DobPageState extends State<DobPage> {
                   ),
                   child: Column(
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Current date of birth',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -91,10 +91,10 @@ class _DobPageState extends State<DobPage> {
                         ),
                       ),
                       const SizedBox(height: 20.0),
-                      const Text(
+                      Text(
                         'New date of birth',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),

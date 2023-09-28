@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:next_life/data/init_data.dart';
-import 'package:next_life/transfer.dart';
 
 class AgePage extends StatefulWidget {
   final Function goToNextPage;
@@ -89,7 +88,6 @@ class _AgePageState extends State<AgePage> {
             onTap: () async {
               FocusScope.of(context).unfocus();
               sendData.age = selectedAge;
-              sendUserInfoToAWS();
               widget.goToNextPage();
             },
             child: Container(

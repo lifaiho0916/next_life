@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:next_life/components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 
 class EmploymentCategoryNextLifePage extends StatefulWidget {
@@ -28,25 +28,32 @@ class _EmploymentCategoryNextLifePageState extends State<EmploymentCategoryNextL
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> subPages = [
-      buildEmploymentCategory(),
-      buildCurrentJob(),
-      buildPastJob(),
-    ];
+    return Consumer(builder: (context, ref, child)
+    {
+      final themeMode = sendData.theme;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
+      
+      List<Widget> subPages = [
+        buildEmploymentCategory(),
+        buildCurrentJob(textColor),
+        buildPastJob(textColor),
+      ];
 
-    return Column(
-      children: <Widget>[
-        subPages[_activeSubPageIdx],
-      ],
-    );
+      return Column(
+        children: <Widget>[
+          subPages[_activeSubPageIdx],
+        ],
+      );
+    });
   }
 
   Widget buildEmploymentCategory() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+
       return Container(
         width: double.maxFinite,
         height: 150,
@@ -129,12 +136,13 @@ class _EmploymentCategoryNextLifePageState extends State<EmploymentCategoryNextL
     });
   }
 
-  Widget buildCurrentJob() {
+  Widget buildCurrentJob(Color textColor) {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 340,
@@ -150,10 +158,10 @@ class _EmploymentCategoryNextLifePageState extends State<EmploymentCategoryNextL
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Current Job',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -165,10 +173,10 @@ class _EmploymentCategoryNextLifePageState extends State<EmploymentCategoryNextL
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Employer',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -210,10 +218,10 @@ class _EmploymentCategoryNextLifePageState extends State<EmploymentCategoryNextL
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Job Title',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -369,12 +377,13 @@ class _EmploymentCategoryNextLifePageState extends State<EmploymentCategoryNextL
     });
   }
 
-  Widget buildPastJob() {
+  Widget buildPastJob(Color textColor) {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 340,
@@ -390,10 +399,10 @@ class _EmploymentCategoryNextLifePageState extends State<EmploymentCategoryNextL
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Past Job',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -405,10 +414,10 @@ class _EmploymentCategoryNextLifePageState extends State<EmploymentCategoryNextL
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Employer',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -450,10 +459,10 @@ class _EmploymentCategoryNextLifePageState extends State<EmploymentCategoryNextL
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Job Title',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),

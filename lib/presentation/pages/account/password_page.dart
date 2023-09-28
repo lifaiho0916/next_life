@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:next_life/components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
 import 'package:next_life/constants.dart';
 import 'package:next_life/data/init_data.dart';
 
@@ -22,22 +21,25 @@ class _PasswordPageState extends State<PasswordPage> {
   late final TextEditingController _currentPwdController;
   late final TextEditingController _newPwdController;
   late final TextEditingController _confirmPwdController;
+  late bool cur,pwd1,pwd2;
 
   @override
   void initState() {
     super.initState();
-    _currentPwdController = TextEditingController(text: sendData.password);
+    _currentPwdController = TextEditingController(text: '');
     _newPwdController = TextEditingController(text: '');
     _confirmPwdController = TextEditingController(text: '');
+    cur = pwd1 = pwd2 = false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0
           ? lightTheme.scaffoldBackgroundColor
           : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return WillPopScope(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -56,10 +58,10 @@ class _PasswordPageState extends State<PasswordPage> {
                   ),
                   child: Column(
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Current password',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -90,17 +92,17 @@ class _PasswordPageState extends State<PasswordPage> {
                                 borderRadius: BorderRadius.circular(10)),
                             suffixIcon: MlIconButton(
                               size: 20,
-                              tooltip: 'Show',
+                              tooltip: cur?'Hide':'Show',
                               onTap: () {
-                                setState(() {});
+                                setState(() {cur = !cur;});
                               },
-                              icon: Icons.visibility_off,
+                              icon: cur?Icons.visibility:Icons.visibility_off,
                               enabledColor: const Color(0xFF237A6A),
                             ),
                           ),
                           onChanged: (value) {},
                           textAlign: TextAlign.start,
-                          obscureText: true,
+                          obscureText: !cur,
                         ),
                       ),
                       const SizedBox(height: 20.0),
@@ -112,10 +114,10 @@ class _PasswordPageState extends State<PasswordPage> {
                         ),
                       ),
                       const SizedBox(height: 20.0),
-                      const Text(
+                      Text(
                         'New password',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -146,27 +148,27 @@ class _PasswordPageState extends State<PasswordPage> {
                                 borderRadius: BorderRadius.circular(10)),
                             suffixIcon: MlIconButton(
                               size: 20,
-                              tooltip: 'Show',
+                              tooltip: pwd1?'Hide':'Show',
                               onTap: () {
-                                setState(() {});
+                                setState(() {pwd1=!pwd1;});
                               },
-                              icon: Icons.visibility_off,
+                              icon: pwd1?Icons.visibility:Icons.visibility_off,
                               enabledColor: const Color(0xFF237A6A),
                             ),
                           ),
                           onChanged: (value) {},
                           textAlign: TextAlign.start,
-                          obscureText: true,
+                          obscureText: !pwd1,
                         ),
                       ),
                       const SizedBox(height: 25.0),
                       Container(
                         margin: const EdgeInsets.only(bottom: 5.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           'Confirm new password',
                           style: TextStyle(
-                            color: Color(0xFF414C57),
+                            color: textColor,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -197,17 +199,17 @@ class _PasswordPageState extends State<PasswordPage> {
                                 borderRadius: BorderRadius.circular(10)),
                             suffixIcon: MlIconButton(
                               size: 20,
-                              tooltip: 'Show',
+                              tooltip: pwd2?'Hide':'Show',
                               onTap: () {
-                                setState(() {});
+                                setState(() {pwd2=!pwd2;});
                               },
-                              icon: Icons.visibility_off,
+                              icon: pwd2?Icons.visibility:Icons.visibility_off,
                               enabledColor: const Color(0xFF237A6A),
                             ),
                           ),
                           onChanged: (value) {},
                           textAlign: TextAlign.start,
-                          obscureText: true,
+                          obscureText: !pwd2,
                         ),
                       ),
                       const SizedBox(height: 35.0),

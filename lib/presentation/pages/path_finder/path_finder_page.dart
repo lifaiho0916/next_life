@@ -1,13 +1,13 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:convert';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:http/http.dart' as http;
-import 'package:next_life/data/init_data.dart';
+import 'package:next_life/transfer.dart';
 
 
 
@@ -42,33 +42,17 @@ class _PathFinderPageState extends State<PathFinderPage> {
     setState(() {
       isLoading = true; // Show loading spinner
     });
-    var data = {
-      "prompt":"",
-      "age":"30",
-      "questionsAreAnsrwered":false,
-      "answersToQuestions":"",
-      "generateLifePlan":false,
-      "lifePlanDataRequest":""
-    };
-    const apiUrl =
-        "https://e5120pdd9j.execute-api.us-east-1.amazonaws.com/default/ynlAIControler";
-    final headers = {'Content-Type': 'application/json'};
-    final response = await http.post(Uri.parse(apiUrl),
-        headers: headers, body: jsonEncode(data));
+    bool result = await getDataWhatTheyLikeFromAWS();
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      String hintTextResponse = data['response'];
+    if (result) {
       setState(() {
-        hintText = hintTextResponse;
+        hintText = sendData.hintText;
         isLoading = false;
       });
-      safePrint(response);
     } else {
-      safePrint('error occured. ${response.body}');
-      setState(() {
-        isLoading = false; // Hide loading spinner in case of error
-      });
+        setState(() {
+          isLoading = false; // Hide loading spinner in case of error
+        });
     }
   }
 
@@ -87,7 +71,7 @@ class _PathFinderPageState extends State<PathFinderPage> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
@@ -115,10 +99,10 @@ class _PathFinderPageState extends State<PathFinderPage> {
                     ),
                   ),
                   const SizedBox(height: 60.0,),
-                  const Text(
+                  Text(
                     'Survey topic',
                     style: TextStyle(
-                      color: Color(0xFF414C57),
+                      color: textColor,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
@@ -170,10 +154,10 @@ class _PathFinderPageState extends State<PathFinderPage> {
                     ),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Begin survey',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: textColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),

@@ -1,7 +1,7 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:next_life/pages.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import "./auth_tabs/onboarding.dart";
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -21,55 +21,142 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late final TextEditingController usernameController;
   late final TextEditingController passwordController;
+  var now_loading = false;
 
   @override
   void initState() {
     super.initState();
-    _configureAmplify();
-
     usernameController = TextEditingController();
     passwordController = TextEditingController();
+    _configureAmplify();
   }
 
   void _configureAmplify() async {
+    if(init_flag) {
+      await handleGotoMainPage();
+      return;
+    }
+    init_flag = true;
     try {
       await Amplify.addPlugin(AmplifyAuthCognito());
       await Amplify.configure(amplifyconfig);
-      safePrint('Successfully configured');
-      // await handleSuccessfulLogin();
-      final authStatus = await Amplify.Auth.fetchAuthSession();
-      if(authStatus.isSignedIn) Navigator.pushNamed(context, "/");
+      await handleGotoMainPage();
     } on Exception catch (e) {
-      safePrint('Error configuring Amplify: $e');
+        Fluttertoast.showToast(
+          msg: 'Error Amplify configure. $e',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+    }
+  }
+  
+  Future<void> handleGotoMainPage() async {
+    now_loading = true;
+    final authStatus = await Amplify.Auth.fetchAuthSession();
+    now_loading = false;
+    if(authStatus.isSignedIn) {
+      final result = await Amplify.Auth.fetchUserAttributes();
+
+      for (final element in result) {
+        if (element.userAttributeKey == AuthUserAttributeKey.sub) {
+          userId = element.value;
+          now_loading = true;
+          final isOldMember = await getTableDataFromAWS(0);
+          if(isOldMember) {
+            getTableDataFromAWS(1);
+            Navigator.pushNamed(context, "/");
+            now_loading = false;
+          } else {
+            sendUserProfileInfoToAWS();
+            sendUserInfoToAWS();
+            
+            now_loading = false;
+
+            Fluttertoast.showToast(
+              msg: 'welcome ${sendData.userName}',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+            );
+
+            Navigator.push(
+              context,
+              PageTransition(
+                child: const OnBoarding(),
+                type: PageTransitionType.rightToLeft,
+              ),
+            );
+          }
+        }
+      }
+    } else { 
+      now_loading = false; 
     }
   }
 
-  // Future<void> handleSuccessfulLogin() async {
-  //   final authStatus = await Amplify.Auth.fetchAuthSession();
-  //   if(!authStatus.isSignedIn) return;
-  //   try {
-  //     final result = await Amplify.Auth.fetchUserAttributes();
-  //
-  //     for (final element in result) {
-  //       if (element.userAttributeKey == AuthUserAttributeKey.sub) {
-  //         userId = element.value;
-  //         getTableDataFromAWS();
-  //       }
-  //     }
-  //
-  //     Navigator.push(
-  //       context,
-  //       PageTransition(
-  //         child: const OnBoarding(),
-  //         type: PageTransitionType.rightToLeft,
-  //       ),
-  //     );
-  //   } on AuthException catch (e) {
-  //     safePrint('Error fetching user attributes: ${e.message}');
-  //   }
-  // }
+  Future<void> handleSuccessfulLogin() async {
+    final authStatus = await Amplify.Auth.fetchAuthSession();
+    if(!authStatus.isSignedIn) return;
+    try {
+      final result = await Amplify.Auth.fetchUserAttributes();
+
+      for (final element in result) {
+        if (element.userAttributeKey == AuthUserAttributeKey.sub) {
+          userId = element.value;
+        }
+      }
+    } on AuthException catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Login Failed. $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+    final isOldMember = await getTableDataFromAWS(0);
+    if(isOldMember) {
+      getTableDataFromAWS(1);
+
+      Fluttertoast.showToast(
+        msg: 'welcome ${sendData.userName}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+
+      Navigator.pushNamed(context, "/");
+      now_loading = false;
+    } else {
+      sendUserProfileInfoToAWS();
+      sendUserInfoToAWS();
+      
+      Fluttertoast.showToast(
+        msg: 'welcome ${sendData.userName}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+
+      Navigator.push(
+        context,
+        PageTransition(
+          child: const OnBoarding(),
+          type: PageTransitionType.rightToLeft,
+        ),
+      );
+      now_loading = false;
+    }
+    
+  }
   @override
   Widget build(BuildContext context) {
+    // return now_loading ? buildLoadingWidget() :
     return Authenticator(
       // `authenticatorBuilder` is used to customize the UI for one or more steps
       authenticatorBuilder: (BuildContext context, AuthenticatorState state) {
@@ -77,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
           case AuthenticatorStep.signIn:
             return Padding(
               padding:
-              const EdgeInsets.symmetric(vertical: 70.0, horizontal: 20.0),
+                  const EdgeInsets.symmetric(vertical: 70.0, horizontal: 20.0),
               child: CustomScaffold(
                   state: state,
                   // A prebuilt Sign In form from amplify_authenticator
@@ -97,53 +184,59 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 10),
                       // SignInForm(),
                       Column(
-                        children: <Widget>[
-                          TextFormField(
-                            controller: usernameController,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                              labelText: 'Email',
-                              prefixIcon: Icon(Icons.email),
-                            ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          TextFormField(
-                            controller: passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Password',
-                              prefixIcon: Icon(Icons.lock),
-                            ),
-                          ),
-                          const SizedBox(height: 24.0),
-                          TextButton(
-                            onPressed: () async {
-                              final email = usernameController.text;
-                              final password = passwordController.text;
-                              sendData.email = email;
-                              sendData.password = password;
-                              // Handle login here using Amplify or other authentication method
-                              try {
-                                final result = await Amplify.Auth.signIn(
-                                  username: email,
-                                  password: password,
-                                );
-                                if (result.isSignedIn) {
-                                  Navigator.pushNamed(context, "/");
-                                  // await handleSuccessfulLogin();
-                                } else {
-                                  // Handle login failure
-                                  safePrint('Sign in failed');
-                                }
-                              } catch (e) {
-                                // Handle login error
-                                safePrint('Error during login: $e');
-                              }
-                            },
-                            child: const Text('SignIn'),
-                          ),
-                        ],
-                      ),
+                            children: <Widget>[
+                              TextFormField(
+                                controller: usernameController,
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: const InputDecoration(
+                                  labelText: 'Email',
+                                  prefixIcon: Icon(Icons.email),
+                                ),
+                              ),
+                              const SizedBox(height: 16.0),
+                              TextFormField(
+                                controller: passwordController,
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                  labelText: 'Password',
+                                  prefixIcon: Icon(Icons.lock),
+                                ),
+                              ),
+                              const SizedBox(height: 24.0),
+                              TextButton(
+                                onPressed: () async {
+                                  final email = usernameController.text;
+                                  final password = passwordController.text;
+                                  // Handle login here using Amplify or other authentication method
+                                  try {
+                                    setState(() {
+                                      now_loading = true;
+                                    });
+
+                                    final result = await Amplify.Auth.signIn(
+                                      username: email,
+                                      password: password,
+                                    );
+                                    if (result.isSignedIn) {
+                                      await handleSuccessfulLogin();
+                                      await getTableDataFromAWS(1);
+                                      now_loading = false;
+                                    } 
+                                  } catch (e) {
+                                    Fluttertoast.showToast(
+                                      msg: 'Sign failed.',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                    );
+                                    now_loading = false;
+                                  }
+                                },
+                                child: now_loading? const CircularProgressIndicator() : const Text('SignIn'),
+                              ),
+                            ],
+                          ),  
                       const SizedBox(height: 0.5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -209,7 +302,7 @@ class _LoginPageState extends State<LoginPage> {
                                 alignment: Alignment.centerLeft,
                                 child: const Image(
                                     image:
-                                    AssetImage('assets/meta/google.png')),
+                                        AssetImage('assets/meta/google.png')),
                               ),
                               Container(
                                 alignment: Alignment.center,
@@ -328,7 +421,7 @@ class _LoginPageState extends State<LoginPage> {
           case AuthenticatorStep.signUp:
             return Padding(
               padding:
-              const EdgeInsets.symmetric(vertical: 70.0, horizontal: 20.0),
+                  const EdgeInsets.symmetric(vertical: 70.0, horizontal: 20.0),
               child: CustomScaffold(
                 state: state,
                 // A prebuilt Sign Up form from amplify_authenticator
@@ -383,7 +476,7 @@ class _LoginPageState extends State<LoginPage> {
               body: const ConfirmResetPasswordForm(),
             );
           default:
-          // Returning null defaults to the prebuilt authenticator for all other steps
+            // Returning null defaults to the prebuilt authenticator for all other steps
             return null;
         }
       },
@@ -392,29 +485,21 @@ class _LoginPageState extends State<LoginPage> {
         builder: Authenticator.builder(),
         home: GestureDetector(
           onTap: () async {
-            try {
-              final result = await Amplify.Auth.fetchUserAttributes();
-
-              for (final element in result) {
-                if (element.userAttributeKey == AuthUserAttributeKey.sub) {
-                  userId = element.value;
-                  getTableDataFromAWS();
-                }
-              }
-            } on AuthException catch (e) {
-              safePrint('Error fetching user attributes: ${e.message}');
-            }
-
-            Navigator.push(
-              context,
-              PageTransition(
-                child: const OnBoarding(),
-                type: PageTransitionType.rightToLeft,
-              ),
-            );
-          },
+            handleSuccessfulLogin();
+          }
         ),
       ),
+    );
+  }
+  
+  Widget buildLoadingWidget() {
+    return const Center(
+        child:Column(
+          children: [
+            SizedBox(height: 300.0,),
+            CircularProgressIndicator(),
+          ],
+        )
     );
   }
 }

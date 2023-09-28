@@ -1,8 +1,9 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
+import 'package:next_life/pages.dart';
+import 'package:next_life/transfer.dart';
 
 class AppearancePage extends StatefulWidget {
   const AppearancePage({
@@ -30,9 +31,10 @@ class _AppearancePageState extends State<AppearancePage> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
 
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       _selectedMode = themeMode;
       Color backgroundColor = themeMode==0? lightTheme.scaffoldBackgroundColor:darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
 
       return WillPopScope(
         child: Padding(
@@ -52,10 +54,10 @@ class _AppearancePageState extends State<AppearancePage> {
                   ),
                   child: Column(
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Appearance',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -68,9 +70,12 @@ class _AppearancePageState extends State<AppearancePage> {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                setSelectedModeValue(0);
-                                safePrint("Here is to set the light mode");
-                                ref.read(themeModeProvider.notifier).state = 0;
+                                sendData.theme = 0;
+                                sendUserInfoToAWS();
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (BuildContext context) => const BasePage()),
+                                );
                               },
                               child: Column(
                                 children: <Widget>[
@@ -82,13 +87,13 @@ class _AppearancePageState extends State<AppearancePage> {
                                     focusColor: const Color(0xFF298977),
                                     onChanged: (value) {
                                       setSelectedModeValue(value ?? 0);
-                                      ref.read(themeModeProvider.notifier).state = 0;
+                                      sendData.theme = 0;
                                     },
                                   ),
-                                  const Text(
+                                  Text(
                                     'Light mode',
                                     style: TextStyle(
-                                      color: Color(0xFF414C57),
+                                      color: textColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -98,9 +103,12 @@ class _AppearancePageState extends State<AppearancePage> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                setSelectedModeValue(1);
-                                safePrint("Here is to set the dark mode");
-                                ref.read(themeModeProvider.notifier).state = 1;
+                                sendData.theme = 1;
+                                sendUserInfoToAWS();
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (BuildContext context) => const BasePage()),
+                                );
                               },
                               child: Column(
                                 children: <Widget>[
@@ -112,13 +120,13 @@ class _AppearancePageState extends State<AppearancePage> {
                                     focusColor: const Color(0xFF298977),
                                     onChanged: (value) {
                                       setSelectedModeValue(value ?? 1);
-                                      ref.read(themeModeProvider.notifier).state = 1;
+                                      sendData.theme = 1;
                                     },
                                   ),
-                                  const Text(
+                                  Text(
                                     'Dark mode',
                                     style: TextStyle(
-                                      color: Color(0xFF414C57),
+                                      color: textColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -131,7 +139,9 @@ class _AppearancePageState extends State<AppearancePage> {
                       ),
                       const SizedBox(height: 20.0),
                       GestureDetector(
-                        onTap: () async {},
+                        onTap: () async {
+                          widget.onGoToPage(2);
+                        },
                         child: Container(
                           height: 42,
                           alignment: Alignment.center,

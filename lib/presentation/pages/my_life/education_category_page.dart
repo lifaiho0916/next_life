@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:next_life/pages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 class EducationCategoryPage extends StatefulWidget {
   const EducationCategoryPage({
@@ -22,9 +22,10 @@ class _EducationCategoryPageState extends State<EducationCategoryPage> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -42,10 +43,10 @@ class _EducationCategoryPageState extends State<EducationCategoryPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Text(
+              Text(
                 'Education',
                 style: TextStyle(
-                  color: Color(0xFF414C57),
+                  color: textColor,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
@@ -54,10 +55,10 @@ class _EducationCategoryPageState extends State<EducationCategoryPage> {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.centerLeft,
-                    child: const Text(
+                    child: Text(
                       'Highest level achieved',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -110,10 +111,10 @@ class _EducationCategoryPageState extends State<EducationCategoryPage> {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.centerLeft,
-                    child: const Text(
+                    child: Text(
                       'Degree earned',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -165,10 +166,10 @@ class _EducationCategoryPageState extends State<EducationCategoryPage> {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.centerLeft,
-                    child: const Text(
+                    child: Text(
                       'Date of graduation',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -221,10 +222,10 @@ class _EducationCategoryPageState extends State<EducationCategoryPage> {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.centerLeft,
-                    child: const Text(
+                    child: Text(
                       'Certification',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),

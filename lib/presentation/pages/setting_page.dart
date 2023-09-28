@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 
 class SettingPage extends StatefulWidget {
@@ -21,7 +21,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;

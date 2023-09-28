@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 
 class EducationCategoryNextLifePage extends StatefulWidget {
@@ -24,13 +24,12 @@ class _EducationCategoryNextLifePageState extends State<EducationCategoryNextLif
 
   @override
   Widget build(BuildContext context) {
-    bool _checkbox = false;
-    bool _checkboxListTile = false;
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -46,17 +45,16 @@ class _EducationCategoryNextLifePageState extends State<EducationCategoryNextLif
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Text(
+               Text(
                 'Do you want to pursue hinder education?',
                 style: TextStyle(
-                  color: Color(0xFF414C57),
+                  color: textColor,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 15.0,),
               Column(
                 children: <Widget>[
                   Row(
@@ -94,53 +92,50 @@ class _EducationCategoryNextLifePageState extends State<EducationCategoryNextLif
                   const SizedBox(height: 2.0)
                 ],
               ),
-              const SizedBox(height: 15.0,),
               Container(
                 height: 1,  // Adjust the height to your preference
                 color:const Color(0xFF949494),
               ),
-              const SizedBox(height: 15.0,),
               Column(
                 children: <Widget>[
                   Container(
                     alignment: Alignment.centerLeft,
-                    child: const Text(
+                    child: Text(
                       'What type of education?',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
                   const SizedBox(height: 5.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Checkbox(
-                        value: _checkbox,
-                        onChanged: (value) {
-                          setState(() {
-                            _checkbox = !_checkbox;
-                          });
-                        },
-                      ),
-                      const Text("Yes"),
-                      const SizedBox(width: 65,),
-                      Checkbox(
-                        value: _checkbox,
-                        onChanged: (value) {
-                          setState(() {
-                            _checkbox = !_checkbox;
-                          });
-                        },
-                      ),
-                      const Text("No"),
-                    ],
-                  ),
+                  // Row(
+                  //   children: <Widget>[
+                  //     CheckboxListTile(
+                  //       value: checkedCollege,
+                  //       onChanged: (bool? value) {
+                  //         setState(() {
+                  //           checkedCollege = value!;
+                  //         });
+                  //       },
+                  //       title: Text('Headline 1'),
+                  //       controlAffinity: ListTileControlAffinity.leading,  // Align checkbox to the left
+                  //     ),
+                  //     CheckboxListTile(
+                  //       value: checkedCollege,
+                  //       onChanged: (bool? value) {
+                  //         setState(() {
+                  //           checkedCollege = value!;
+                  //         });
+                  //       },
+                  //       title: Text('Headline 2'),
+                  //       controlAffinity: ListTileControlAffinity.leading,  // Align checkbox to the left
+                  //     ),
+                  //   ],
+                  // )
                 ],
               ),
-              const SizedBox(height: 15.0,),
               GestureDetector(
                 onTap: () async {},
                 child: Container(

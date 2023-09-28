@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:next_life/components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 
 class MonthlyExpenseDialogNextLifePage extends StatefulWidget {
@@ -32,9 +32,10 @@ class _MonthlyExpenseDialogNextLifePageState extends State<MonthlyExpenseDialogN
   Widget buildContent() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         decoration: BoxDecoration(
@@ -52,10 +53,10 @@ class _MonthlyExpenseDialogNextLifePageState extends State<MonthlyExpenseDialogN
                 Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(top: 5),
-                  child: const Text(
+                  child: Text(
                     'Monthly Expense',
                     style: TextStyle(
-                      color: Color(0xFF414C57),
+                      color: textColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -84,10 +85,10 @@ class _MonthlyExpenseDialogNextLifePageState extends State<MonthlyExpenseDialogN
                 children: <Widget>[
                   Container(
                     alignment: Alignment.centerLeft,
-                    child: const Text(
+                    child: Text(
                       'Monthly Expense',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),

@@ -1,10 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:next_life/components.dart';
 import 'package:next_life/pages.dart';
-import 'package:next_life/main.dart';
+
 import 'package:next_life/constants.dart';
 import 'package:next_life/data/init_data.dart';
 
@@ -42,10 +44,11 @@ class _AccountPageState extends State<AccountPage> {
     current_dob = sendData.day_of_birth;
     current_gender = sendData.gender;
     return Consumer(builder: (context, ref, child) {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0
           ? lightTheme.scaffoldBackgroundColor
           : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return WillPopScope(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -68,10 +71,15 @@ class _AccountPageState extends State<AccountPage> {
                     Stack(
                       alignment: Alignment.center,
                       children: [
+                        sendData.curAvatarImage == ""? CircleAvatar(
+                            backgroundColor: backgroundColor,
+                            radius: 45,
+                            backgroundImage: const AssetImage('assets/meta/avatar.jpg')
+                        ):
                         CircleAvatar(
                           backgroundColor: backgroundColor,
                           radius: 45,
-                          backgroundImage: const AssetImage('assets/meta/avatar.jpg'),
+                          backgroundImage: FileImage(File(sendData.curAvatarImage)),
                         ),
                         Container(
                           width: 90,
@@ -105,10 +113,10 @@ class _AccountPageState extends State<AccountPage> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              const Text(
+                              Text(
                                 'Username',
                                 style: TextStyle(
-                                  color: Color(0xFF414C57),
+                                  color: textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12,
                                 ),
@@ -123,7 +131,7 @@ class _AccountPageState extends State<AccountPage> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   alignment: Alignment.centerLeft,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFF1F7F6),
+                                    color: backgroundColor,
                                     shape: BoxShape.rectangle,
                                     border: Border.all(
                                         color: const Color(0xFF237A6A)),
@@ -149,10 +157,10 @@ class _AccountPageState extends State<AccountPage> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              const Text(
+                              Text(
                                 'Date of birth',
                                 style: TextStyle(
-                                  color: Color(0xFF414C57),
+                                  color: textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12,
                                 ),
@@ -167,7 +175,7 @@ class _AccountPageState extends State<AccountPage> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   alignment: Alignment.centerLeft,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFF1F7F6),
+                                    color: backgroundColor,
                                     shape: BoxShape.rectangle,
                                     border: Border.all(
                                         color: const Color(0xFF237A6A)),
@@ -196,10 +204,10 @@ class _AccountPageState extends State<AccountPage> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              const Text(
+                              Text(
                                 'Gender',
                                 style: TextStyle(
-                                  color: Color(0xFF414C57),
+                                  color: textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12,
                                 ),
@@ -214,7 +222,7 @@ class _AccountPageState extends State<AccountPage> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   alignment: Alignment.centerLeft,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFF1F7F6),
+                                    color: backgroundColor,
                                     shape: BoxShape.rectangle,
                                     border: Border.all(
                                         color: const Color(0xFF237A6A)),
@@ -240,10 +248,10 @@ class _AccountPageState extends State<AccountPage> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              const Text(
+                              Text(
                                 'Password',
                                 style: TextStyle(
-                                  color: Color(0xFF414C57),
+                                  color: textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12,
                                 ),
@@ -256,7 +264,7 @@ class _AccountPageState extends State<AccountPage> {
                                   style:
                                       const TextStyle(color: Color(0xFF46A291)),
                                   decoration: InputDecoration(
-                                    fillColor: const Color(0xFFF1F7F6),
+                                    fillColor: backgroundColor,
                                     filled: true,
                                     contentPadding: const EdgeInsets.symmetric(
                                         vertical: 10, horizontal: 10),

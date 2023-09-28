@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 
 class HelpSupportPage extends StatefulWidget {
@@ -26,9 +26,10 @@ class _HelpSupportPageState extends State<HelpSupportPage> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return WillPopScope(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -47,10 +48,10 @@ class _HelpSupportPageState extends State<HelpSupportPage> {
                   ),
                   child: Column(
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Help and Support',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),

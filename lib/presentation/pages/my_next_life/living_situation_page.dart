@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:next_life/components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 
 class LivingSituationNextLifePage extends StatefulWidget {
@@ -66,9 +66,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
   Widget buildLivingSituationList() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 407,
@@ -91,10 +92,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Housing',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -122,10 +123,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Transportation',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -167,10 +168,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Dependents',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -198,10 +199,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Address',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -243,10 +244,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Pets',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -274,10 +275,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Internet speed',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -319,10 +320,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Hobbies',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -350,10 +351,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Sleep schedule',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -422,9 +423,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
   Widget buildHousing() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 287,
@@ -440,10 +442,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Housing',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -456,10 +458,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Housing',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -503,10 +505,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Type of housing',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -626,9 +628,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
   Widget buildTransportation() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 287,
@@ -644,10 +647,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Transportation',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -660,10 +663,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Transportation',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -707,10 +710,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Type of Transportation',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -830,9 +833,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
   Widget buildDependents() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 210,
@@ -848,10 +852,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Dependents',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -859,10 +863,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
             const SizedBox(height: 20.0),
             Container(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 'Select number of dependants',
                 style: TextStyle(
-                  color: Color(0xFF414C57),
+                  color: textColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -937,9 +941,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
   Widget buildAddress() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 375,
@@ -955,10 +960,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Address',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -966,10 +971,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
             const SizedBox(height: 20.0),
             Container(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 'Street address',
                 style: TextStyle(
-                  color: Color(0xFF414C57),
+                  color: textColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -1008,10 +1013,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
             const SizedBox(height: 20.0),
             Container(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 'ZIP code',
                 style: TextStyle(
-                  color: Color(0xFF414C57),
+                  color: textColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -1055,10 +1060,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'City',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -1069,8 +1074,8 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                         height: 41,
                         child: TextField(
                           controller: _cityCodeController,
-                          style: const TextStyle(
-                            color: Color(0xFF414C57),
+                          style: TextStyle(
+                            color: textColor,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -1107,10 +1112,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                       Container(
                         alignment: Alignment.bottomLeft,
                         padding: const EdgeInsets.only(left: 8),
-                        child: const Text(
+                        child: Text(
                           'State',
                           style: TextStyle(
-                            color: Color(0xFF414C57),
+                            color: textColor,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -1122,8 +1127,8 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                         height: 41,
                         child: TextField(
                           controller: _stateCodeController,
-                          style: const TextStyle(
-                            color: Color(0xFF414C57),
+                          style: TextStyle(
+                            color: textColor,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -1194,9 +1199,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
   Widget buildPets() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 287,
@@ -1212,10 +1218,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Pets',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -1227,10 +1233,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Pet type',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1272,10 +1278,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Number of pets',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1395,9 +1401,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
   Widget buildInternetSpeed() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 210,
@@ -1413,10 +1420,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Internet speed',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -1424,10 +1431,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
             const SizedBox(height: 20.0),
             Container(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 'Select your internet speed',
                 style: TextStyle(
-                  color: Color(0xFF414C57),
+                  color: textColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -1505,9 +1512,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
   Widget buildHobbies() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 287,
@@ -1523,10 +1531,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Hobbies',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -1538,10 +1546,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Hobby description',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1583,10 +1591,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Hours pr. week',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1706,9 +1714,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
   Widget buildSleepSchedule() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 210,
@@ -1724,10 +1733,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Sleep schedule',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -1739,10 +1748,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Sleep time',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1783,10 +1792,10 @@ class _LivingSituationNextLifePageState extends State<LivingSituationNextLifePag
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Wake up time',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),

@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -23,7 +26,6 @@ class _HomePageState extends State<HomePage> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                const SizedBox(height: 30.0),
                 GestureDetector(
                   onTap: () async {
                     widget.onGoToPage(9);
@@ -61,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 GestureDetector(
                   onTap: () async {
-
+                    widget.onGoToPage(11);
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -267,6 +269,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                
               ],
             ),
           ),

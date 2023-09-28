@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:next_life/data/init_data.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
@@ -9,14 +8,6 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  late String greeting;
-
-  @override
-  void initState() {
-    super.initState();
-    greeting = 'Welcome ${sendData.userName}';
-  }
-
   @override
   Widget build(BuildContext context) {
     return  Drawer(
@@ -26,6 +17,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           children: [
            // SizedBox(height: 30),
             profileWidget(),
+
             const SizedBox(height: 30),
             Padding(
               padding: const EdgeInsets.only(left: 25.0),
@@ -50,7 +42,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   }
 
   Widget profileWidget(){
-    greeting = 'Welcome ${sendData.userName}';
     return Container(
       padding: const EdgeInsets.only(top: 30,bottom: 20),
       decoration: const BoxDecoration(
@@ -73,9 +64,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ),
           const SizedBox(width: 10),
-          Text(
-            greeting,
-            style: const TextStyle(
+          const Text(
+            'Brianna James',
+            style: TextStyle(
               color: Colors.black,
               fontSize: 18.0,
             ),

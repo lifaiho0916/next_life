@@ -33,6 +33,8 @@ class _UsernamePageState extends State<UsernamePage> {
   Widget build(BuildContext context) {
     currnet_userName = sendData.userName;
     return Consumer(builder: (context, ref, child) {
+      final themeMode = sendData.theme;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return WillPopScope(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -51,10 +53,10 @@ class _UsernamePageState extends State<UsernamePage> {
                   ),
                   child: Column(
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Current username',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -71,8 +73,8 @@ class _UsernamePageState extends State<UsernamePage> {
                           alignment: Alignment.center,
                           child: Text(
                             currnet_userName,
-                            style: const TextStyle(
-                              color: Color(0xFF414C57),
+                            style: TextStyle(
+                              color: textColor,
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                             ),
@@ -86,10 +88,10 @@ class _UsernamePageState extends State<UsernamePage> {
                         ),
                       ),
                       const SizedBox(height: 20.0),
-                      const Text(
+                      Text(
                         'New username',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -133,7 +135,7 @@ class _UsernamePageState extends State<UsernamePage> {
                       GestureDetector(
                         onTap: () async {
                           sendData.userName = _usernameController.text;
-                          await sendUserInfoToAWS();
+                          sendUserInfoToAWS();
                           Navigator.pushNamed(context, "/");
                         },
                         child: Container(

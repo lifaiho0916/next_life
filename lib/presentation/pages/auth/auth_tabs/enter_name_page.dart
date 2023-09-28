@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:next_life/data/init_data.dart';
-import 'package:next_life/transfer.dart';
 
 class EnterNamePage extends StatefulWidget {
   final Function goToNextPage;
@@ -71,7 +70,6 @@ class _EnterNamePageState extends State<EnterNamePage> {
           GestureDetector(
             onTap: () async {
               sendData.userName = name.text;
-              sendUserInfoToAWS();
               widget.goToNextPage();
             },
             child: Container(

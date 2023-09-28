@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:next_life/transfer.dart';
 
 class PathPersonalizedPlanPage extends StatefulWidget {
   const PathPersonalizedPlanPage({
@@ -23,45 +21,33 @@ class PathPersonalizedPlanPage extends StatefulWidget {
 class _PathPersonalizedPlanPageState extends State<PathPersonalizedPlanPage> {
   bool isLoading = true;
   String schedule = '';
-
-  Future<void> getDataScheduleFromAWS() async {
-    setState(() {
-      isLoading = true; // Show loading spinner
-    });
-    var data = {
-      "prompt":"",
-      "age":"30",
-      "questionsAreAnsrwered":false,
-      "answersToQuestions":"",
-      "generateLifePlan":true,
-      "lifePlanDataRequest":""
-    };
-    const apiUrl =
-        "https://e5120pdd9j.execute-api.us-east-1.amazonaws.com/default/ynlAIControler";
-    final headers = {'Content-Type': 'application/json'};
-    final response = await http.post(Uri.parse(apiUrl),
-        headers: headers, body: jsonEncode(data));
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      String scheduleResponse = data['response'];
-      setState(() {
-        schedule = scheduleResponse;
-        isLoading = false;
-      });
-      safePrint(response);
-    } else {
-      safePrint('error occured. ${response.body}');
-      setState(() {
-        isLoading = false; // Hide loading spinner in case of error
-      });
-    }
-  }
+ 
 
   @override
   void initState() {
     super.initState();
-    getDataScheduleFromAWS();
+    loadScheduleData();
+  }
+  
+  Future<void> loadScheduleData() async {
+    setState(() {
+      isLoading = true; // Show loading spinner
+    });
+    bool result = await getDataScheduleFromAWS();
+    sendData.schedule.replaceAll(RegExp(r'[^\x00-\x7F]+'), '');
+    if(result)
+    {
+      setState(() {
+        schedule = sendData.schedule;
+        sendUserScheduleToAWS();
+        isLoading = false;
+      });
+    } else {
+        setState(() {
+        isLoading = false; // Hide loading spinner in case of error
+      });
+
+    }
   }
 
   Widget buildLoadingWidget() {
@@ -79,7 +65,7 @@ class _PathPersonalizedPlanPageState extends State<PathPersonalizedPlanPage> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;

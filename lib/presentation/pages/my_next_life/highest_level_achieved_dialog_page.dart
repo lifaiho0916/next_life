@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:next_life/components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 
 class HighestLevelAchievedDialogNextLifePage extends StatefulWidget {
@@ -25,9 +25,10 @@ class _HighestLevelAchievedDialogNextLifePageState
   Widget buildContent() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         decoration: BoxDecoration(
@@ -45,10 +46,10 @@ class _HighestLevelAchievedDialogNextLifePageState
                 Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(top: 5),
-                  child: const Text(
+                  child: Text(
                     'Highest level achieved',
                     style: TextStyle(
-                      color: Color(0xFF414C57),
+                      color: textColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -77,10 +78,10 @@ class _HighestLevelAchievedDialogNextLifePageState
                 children: <Widget>[
                   Container(
                     alignment: Alignment.centerLeft,
-                    child: const Text(
+                    child: Text(
                       'Highest level achieved',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),

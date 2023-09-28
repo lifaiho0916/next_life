@@ -1,7 +1,9 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:next_life/data/init_data.dart';
-import 'package:next_life/main.dart';
+
 import 'package:next_life/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -25,10 +27,10 @@ class _YourAnswerPageState extends State<YourAnswerPage>
     with SingleTickerProviderStateMixin {
   final PageController _answersController = PageController();
   late AnimationController _animationController;
-  bool work = true;
+  List<bool> work = List<bool>.filled(8,true);
   List<String> questionListResponse = [];
   String currentQuestion = '', option1 = '', option2 = '';
-  List<String> answer = List<String>.filled(7, '');
+  List<String> answer= List<String>.filled(8, '');
   int curQuestionIndex = 0;
   bool isLoading = true;
 
@@ -54,12 +56,12 @@ class _YourAnswerPageState extends State<YourAnswerPage>
       isLoading = true; // Show loading spinner
     });
     var data = {
-      "prompt": sendData.survey,
-      "age": "30",
-      "questionsAreAnsrwered": false,
-      "answersToQuestions": "",
-      "generateLifePlan": false,
-      "lifePlanDataRequest": ""
+      "prompt":sendData.survey,
+      "age":sendData.age,
+      "questionsAreAnsrwered":false,
+      "answersToQuestions":"",
+      "generateLifePlan":false,
+      "lifePlanDataRequest":""
     };
     const apiUrl =
         "https://e5120pdd9j.execute-api.us-east-1.amazonaws.com/default/ynlAIControler";
@@ -68,20 +70,16 @@ class _YourAnswerPageState extends State<YourAnswerPage>
         headers: headers, body: jsonEncode(data));
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
-      // questionListResponse = data['response'].split('/n');
-
       setState(() {
         isLoading = false;
         questionListResponse = data['response'].split(RegExp(r'\d+\.'));
         questionListResponse.removeWhere((part) => part.trim().isEmpty);
 
         curQuestionIndex = 0;
-        currentQuestion =
-            questionListResponse[1].trim().split(RegExp(r'a\)|b\)'))[0];
+        currentQuestion = questionListResponse[1].trim().split(RegExp(r'a\)|b\)'))[0];
         option1 = questionListResponse[1].trim().split(RegExp(r'a\)|b\)'))[1];
         option2 = questionListResponse[1].trim().split(RegExp(r'a\)|b\)'))[2];
       });
-      // safePrint(response);
     } else {
       safePrint('error occured. ${response.body}');
       setState(() {
@@ -92,34 +90,33 @@ class _YourAnswerPageState extends State<YourAnswerPage>
 
   Widget buildLoadingWidget() {
     return const Center(
-        child: Column(
-      children: [
-        SizedBox(
-          height: 300.0,
-        ),
-        CircularProgressIndicator(),
-      ],
-    ) // You can customize this widget as needed
-        );
+        child:Column(
+          children: [
+            SizedBox(height: 300.0,),
+            CircularProgressIndicator(),
+          ],
+        ) // You can customize this widget as needed
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20.0),
-              if (isLoading) buildLoadingWidget(),
-              if (!isLoading)
-                Column(
+    return Consumer(builder: (context, ref, child)
+    {
+      final themeMode = sendData.theme;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
+      return WillPopScope(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20.0),
+                if (isLoading) buildLoadingWidget(),
+                if (!isLoading) Column(
                   children: [
-                    const SizedBox(
-                      height: 20.0,
-                    ),
+                    const SizedBox(height: 20.0,),
                     SizedBox(
                       child: Text(
                         "Answer the follow questions honestly",
@@ -132,10 +129,10 @@ class _YourAnswerPageState extends State<YourAnswerPage>
                       ),
                     ),
                     const SizedBox(height: 50.0),
-                    const Text(
+                    Text(
                       'What is your answer to...?',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
@@ -143,7 +140,7 @@ class _YourAnswerPageState extends State<YourAnswerPage>
                     const SizedBox(height: 15.0),
                     Container(
                       margin: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                      child: Row(
+                      child:Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: indicators(7, curQuestionIndex),
                       ),
@@ -181,101 +178,103 @@ class _YourAnswerPageState extends State<YourAnswerPage>
                     )
                   ],
                 ),
-            ],
+              ],
+            ),
+          ),
+        ),
+        onWillPop: () async {
+          return widget.onGoToPage(-1);
+        },
+      );
+    });
+  }
+ Widget buildAnswerCard() {
+  return Consumer(
+    builder: (context, ref, child) {
+      final themeMode = sendData.theme;
+      Color backgroundColor =
+          themeMode == 0 ? lightTheme.scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
+      return Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 25),
+            child: Text(
+              currentQuestion,
+              style: TextStyle(
+                color: textColor,
+              ),
+            ),
+          ),
+          const SizedBox(height: 45.0),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 35),
+            padding: const EdgeInsets.all(10.0),
+            alignment: Alignment.topLeft,
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              shape: BoxShape.rectangle,
+              border: Border.all(
+                color: const Color(0xFF84C1B6),
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                buildOptionRadioButton(true, option1, textColor),
+                const SizedBox(height: 15.0),
+                buildOptionRadioButton(false, option2, textColor),
+              ],
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Widget buildOptionRadioButton(bool value, String optionText, Color textColor) {
+  return Row(
+    children: [
+      Radio(
+        value: value,
+        fillColor: MaterialStateProperty.all(
+          const Color.fromRGBO(35, 122, 106, 1),
+        ),
+        groupValue: work[curQuestionIndex],
+        onChanged: (newValue) {
+          setState(() {
+            work[curQuestionIndex] = newValue as bool;
+          });
+        },
+      ),
+      Expanded(
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              work[curQuestionIndex] = value; // Toggle the radio value when the text is tapped
+            });
+          },
+          child: Text(
+            optionText,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 3,
+            style: TextStyle(
+              color : textColor
+            ),
           ),
         ),
       ),
-      onWillPop: () async {
-        return widget.onGoToPage(-1);
-      },
-    );
-  }
-
-  Widget buildAnswerCard() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final themeMode = ref.watch(themeModeProvider);
-        Color backgroundColor =
-        themeMode == 0 ? lightTheme.scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
-
-        return Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 25),
-              child: Text(
-                currentQuestion,
-                style: const TextStyle(
-                ),
-              ),
-            ),
-            const SizedBox(height: 45.0),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 35),
-              padding: const EdgeInsets.all(10.0),
-              alignment: Alignment.topLeft,
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                shape: BoxShape.rectangle,
-                border: Border.all(
-                  color: const Color(0xFF84C1B6),
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  buildOptionRadioButton(true, option1),
-                  const SizedBox(height: 15.0),
-                  buildOptionRadioButton(false, option2),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget buildOptionRadioButton(bool value, String optionText) {
-    return Row(
-      children: [
-        Radio(
-          value: value,
-          fillColor: MaterialStateProperty.all(
-            const Color.fromRGBO(35, 122, 106, 1),
-          ),
-          groupValue: work,
-          onChanged: (newValue) {
-            setState(() {
-              work = newValue as bool;
-            });
-          },
-        ),
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                work = value; // Toggle the radio value when the text is tapped
-              });
-            },
-            child: Text(
-              optionText,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: const TextStyle(
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+    ],
+  );
+}
 
   List<Widget> indicators(answerLength, currentIndex) {
     return List<Widget>.generate(
       answerLength,
-      (index) {
+          (index) {
         return Container(
           margin: const EdgeInsets.all(1),
           width: 14,
@@ -292,56 +291,35 @@ class _YourAnswerPageState extends State<YourAnswerPage>
   }
 
   void prevPage() {
-    if (curQuestionIndex == 0) return;
+    if(curQuestionIndex==0) return;
     setState(() {
-      answer[curQuestionIndex] =
-          work ? '${curQuestionIndex + 1}.A' : '${curQuestionIndex + 1}.B';
+      answer[curQuestionIndex] = work[curQuestionIndex]?'${curQuestionIndex+1}.A':'${curQuestionIndex+1}.B';
       curQuestionIndex--;
-      currentQuestion = questionListResponse[curQuestionIndex]
-          .trim()
-          .split(RegExp(r'a\)|b\)'))[0];
-      option1 = questionListResponse[curQuestionIndex]
-          .trim()
-          .split(RegExp(r'a\)|b\)'))[1];
-      option2 = questionListResponse[curQuestionIndex]
-          .trim()
-          .split(RegExp(r'a\)|b\)'))[2];
+      currentQuestion = questionListResponse[curQuestionIndex+1].trim().split(RegExp(r'a\)|b\)'))[0];
+      option1 = questionListResponse[curQuestionIndex+1].trim().split(RegExp(r'a\)|b\)'))[1];
+      option2 = questionListResponse[curQuestionIndex+1].trim().split(RegExp(r'a\)|b\)'))[2];
       safePrint('Prev Page : $currentQuestion');
     });
-    _answersController.animateToPage(
-      curQuestionIndex,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    _answersController.animateToPage(curQuestionIndex,duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,);
   }
 
   void nextPage() {
-    if (curQuestionIndex == 6) {
-      answer[curQuestionIndex] =
-          work ? '${curQuestionIndex + 1}.A' : '${curQuestionIndex + 1}.B';
-      safePrint(answer);
+    if(curQuestionIndex==6) {
+      answer[curQuestionIndex] = work[curQuestionIndex]?'${curQuestionIndex+1}.A':'${curQuestionIndex+1}.B';
       sendData.answer = answer;
       widget.onGoToPage(11);
     }
-    setState(() {
-      answer[curQuestionIndex] =
-          work ? '${curQuestionIndex + 1}.A' : '${curQuestionIndex + 1}.B';
-      curQuestionIndex++;
-      currentQuestion = questionListResponse[curQuestionIndex]
-          .trim()
-          .split(RegExp(r'a\)|b\)'))[0];
-      option1 = questionListResponse[curQuestionIndex]
-          .trim()
-          .split(RegExp(r'a\)|b\)'))[1];
-      option2 = questionListResponse[curQuestionIndex]
-          .trim()
-          .split(RegExp(r'a\)|b\)'))[2];
-      safePrint('Next Page : $currentQuestion');
-    });
-    _answersController.animateToPage(
-      curQuestionIndex,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    else {
+      setState(() {
+        answer[curQuestionIndex] = work[curQuestionIndex]?'${curQuestionIndex+1}.A':'${curQuestionIndex+1}.B';
+        curQuestionIndex++;
+        currentQuestion = questionListResponse[curQuestionIndex+1].trim().split(RegExp(r'a\)|b\)'))[0];
+        option1 = questionListResponse[curQuestionIndex+1].trim().split(RegExp(r'a\)|b\)'))[1];
+        option2 = questionListResponse[curQuestionIndex+1].trim().split(RegExp(r'a\)|b\)'))[2];
+      });
+      _answersController.animateToPage(curQuestionIndex,duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,);
+    }
   }
 }

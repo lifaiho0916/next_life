@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:next_life/components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
 import 'package:next_life/constants.dart';
+import 'package:next_life/data/init_data.dart';
+import 'package:next_life/transfer.dart';
+
 class LivingSituationPage extends StatefulWidget {
   const LivingSituationPage({Key? key}) : super(key: key);
 
@@ -13,30 +15,36 @@ class LivingSituationPage extends StatefulWidget {
 class _LivingSituationPageState extends State<LivingSituationPage> {
   int _activeSubPageIdx = 0;
 
-  late final TextEditingController _housingController;
-  late final TextEditingController _housingTypeController;
-  late final TextEditingController _transportationController;
-  late final TextEditingController _transportationTypeController;
-  late final TextEditingController _addressController;
-  late final TextEditingController _zipCodeController;
-  late final TextEditingController _cityCodeController;
-  late final TextEditingController _stateCodeController;
-  late final TextEditingController _petTypeController;
-  late final TextEditingController _hobbydescController;
+  late final TextEditingController _housingController,
+                                  _transportationController,
+                                  _dependentsController,
+                                  _addressController,
+                                  _petsController,
+                                  _internetSpeedController,
+                                  _hobbiesController,
+                                  _sleepScheduleController,
+                                  _housingTypeController,
+                                  _transportationTypeController,
+                                  _zipCodeController,
+                                  _cityCodeController,
+                                  _stateCodeController;
 
   @override
   void initState() {
     super.initState();
-    _housingController = TextEditingController();
-    _housingTypeController = TextEditingController();
-    _transportationController = TextEditingController();
-    _transportationTypeController = TextEditingController();
-    _addressController = TextEditingController(text: 'Apple Road1');
-    _zipCodeController = TextEditingController(text: '90210');
-    _cityCodeController = TextEditingController(text: 'Los Angeles');
-    _stateCodeController = TextEditingController(text: 'California');
-    _petTypeController = TextEditingController();
-    _hobbydescController = TextEditingController();
+    _housingController = TextEditingController(text: sendData.housing);
+    _transportationController = TextEditingController(text: sendData.transportation);
+    _dependentsController = TextEditingController(text: sendData.dependents);
+    _addressController = TextEditingController(text: sendData.address);
+    _petsController = TextEditingController(text: sendData.pets);
+    _internetSpeedController = TextEditingController(text: sendData.internetSpeed);
+    _hobbiesController = TextEditingController(text: sendData.hobbies);
+    _sleepScheduleController = TextEditingController(text: sendData.sleepSchedule);
+    _housingTypeController = TextEditingController(text: sendData.housingType);
+    _transportationTypeController = TextEditingController(text: sendData.transportationType);
+    _zipCodeController = TextEditingController(text: sendData.zipCode);
+    _cityCodeController = TextEditingController(text: sendData.cityCode);
+    _stateCodeController = TextEditingController(text: sendData.stateCode);
   }
 
   @override
@@ -65,9 +73,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
   Widget buildLivingSituationList() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 407,
@@ -90,10 +99,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Housing',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -105,9 +114,9 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                             _activeSubPageIdx = 1;
                           });
                         },
-                        child: const Text(
-                          'Edit housing',
-                          style: TextStyle(
+                        child: Text(
+                          _housingController.text == '' ? 'None' : _housingController.text,
+                          style: const TextStyle(
                             color: Color(0xFF237A6A),
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -121,10 +130,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Transportation',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -136,9 +145,9 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                             _activeSubPageIdx = 2;
                           });
                         },
-                        child: const Text(
-                          'Edit transportation',
-                          style: TextStyle(
+                        child: Text(
+                          _transportationController.text == ''? 'None' : _transportationController.text,
+                          style: const TextStyle(
                             color: Color(0xFF237A6A),
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -166,10 +175,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Dependents',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -181,9 +190,9 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                             _activeSubPageIdx = 3;
                           });
                         },
-                        child: const Text(
-                          'Edit dependents',
-                          style: TextStyle(
+                        child: Text(
+                          _dependentsController.text == '' ? 'None' : _dependentsController.text,
+                          style: const TextStyle(
                             color: Color(0xFF237A6A),
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -197,10 +206,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Address',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -212,9 +221,9 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                             _activeSubPageIdx = 4;
                           });
                         },
-                        child: const Text(
-                          'Edit address',
-                          style: TextStyle(
+                        child: Text(
+                          _addressController.text == '' ? 'None' : _addressController.text,
+                          style: const TextStyle(
                             color: Color(0xFF237A6A),
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -242,10 +251,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Pets',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -257,9 +266,9 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                             _activeSubPageIdx = 5;
                           });
                         },
-                        child: const Text(
-                          'Edit pets',
-                          style: TextStyle(
+                        child: Text(
+                          _petsController.text == ''? 'None' : _petsController.text,
+                          style: const TextStyle(
                             color: Color(0xFF237A6A),
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -273,10 +282,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Internet speed',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -288,9 +297,9 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                             _activeSubPageIdx = 6;
                           });
                         },
-                        child: const Text(
-                          'Edit internet speed',
-                          style: TextStyle(
+                        child: Text(
+                          _internetSpeedController.text == '' ? 'None' : _internetSpeedController.text,
+                          style: const TextStyle(
                             color: Color(0xFF237A6A),
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -318,10 +327,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Hobbies',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -333,9 +342,9 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                             _activeSubPageIdx = 7;
                           });
                         },
-                        child: const Text(
-                          'Edit hobbies',
-                          style: TextStyle(
+                        child: Text(
+                          _hobbiesController.text == ''? 'None': _hobbiesController.text,
+                          style: const TextStyle(
                             color: Color(0xFF237A6A),
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -349,10 +358,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Sleep schedule',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -364,9 +373,9 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                             _activeSubPageIdx = 8;
                           });
                         },
-                        child: const Text(
-                          'Edit sleep schedule',
-                          style: TextStyle(
+                        child: Text(
+                          _sleepScheduleController.text == '' ? 'None' : _sleepScheduleController.text,
+                          style: const TextStyle(
                             color: Color(0xFF237A6A),
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -388,7 +397,9 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
             ),
             const SizedBox(height: 21.0),
             GestureDetector(
-              onTap: () async {},
+              onTap: () async {
+                await sendUserProfileInfoToAWS();
+              },
               child: Container(
                 width: 145,
                 height: 39,
@@ -402,10 +413,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: const Text(
+                child: Text(
                   'Save',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -421,9 +432,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
   Widget buildHousing() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 287,
@@ -439,10 +451,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Housing',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -455,10 +467,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
-                        'Housing',
+                      Text(
+                        'housing',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -502,10 +514,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Type of housing',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -606,10 +618,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: const Text(
+                child: Text(
                   'Save',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -625,9 +637,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
   Widget buildTransportation() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 287,
@@ -643,10 +656,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Transportation',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -659,10 +672,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Transportation',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -706,10 +719,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'Type of Transportation',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -810,10 +823,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: const Text(
+                child: Text(
                   'Save',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -827,11 +840,13 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
   }
 
   Widget buildDependents() {
+    var curSelect='';
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 210,
@@ -847,10 +862,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Dependents',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -858,10 +873,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
             const SizedBox(height: 20.0),
             Container(
               alignment: Alignment.centerLeft,
-              child: const Text(
-                'Select number of dependants',
+              child: Text(
+                curSelect,
                 style: TextStyle(
-                  color: Color(0xFF414C57),
+                  color: textColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -878,11 +893,11 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
               ),
               alignment: Alignment.center,
               child: DropdownButton<String>(
-                value: '0 dependents',
+                value: curSelect,
                 style: const TextStyle(color: Color(0xFF46A291)),
                 isExpanded: true,
                 dropdownColor: const Color(0xFFF1F7F6),
-                onChanged: (newValue) {},
+                onChanged: (newValue) { curSelect = newValue!; },
                 underline: Container(),
                 icon: const Icon(
                   Icons.keyboard_arrow_down,
@@ -902,6 +917,7 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
               onTap: () async {
                 setState(() {
                   _activeSubPageIdx = 0;
+                  
                 });
               },
               child: Container(
@@ -917,10 +933,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: const Text(
+                child: Text(
                   'Save',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -936,9 +952,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
   Widget buildAddress() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 375,
@@ -954,10 +971,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Address',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -965,10 +982,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
             const SizedBox(height: 20.0),
             Container(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 'Street address',
                 style: TextStyle(
-                  color: Color(0xFF414C57),
+                  color: textColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -1007,10 +1024,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
             const SizedBox(height: 20.0),
             Container(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 'ZIP code',
                 style: TextStyle(
-                  color: Color(0xFF414C57),
+                  color: textColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -1054,10 +1071,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'City',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -1068,8 +1085,8 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                         height: 41,
                         child: TextField(
                           controller: _cityCodeController,
-                          style: const TextStyle(
-                            color: Color(0xFF414C57),
+                          style: TextStyle(
+                            color: textColor,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -1106,10 +1123,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                       Container(
                         alignment: Alignment.bottomLeft,
                         padding: const EdgeInsets.only(left: 8),
-                        child: const Text(
+                        child: Text(
                           'State',
                           style: TextStyle(
-                            color: Color(0xFF414C57),
+                            color: textColor,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -1121,8 +1138,8 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                         height: 41,
                         child: TextField(
                           controller: _stateCodeController,
-                          style: const TextStyle(
-                            color: Color(0xFF414C57),
+                          style: TextStyle(
+                            color: textColor,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -1174,10 +1191,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: const Text(
+                child: Text(
                   'Save',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -1193,9 +1210,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
   Widget buildPets() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 287,
@@ -1211,10 +1229,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Pets',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -1226,10 +1244,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Pet type',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1239,7 +1257,7 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                       width: 160,
                       height: 42,
                       child: TextField(
-                        controller: _petTypeController,
+                        controller: _petsController,
                         style: const TextStyle(color: Color(0xFF46A291)),
                         decoration: InputDecoration(
                           fillColor: const Color(
@@ -1271,10 +1289,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Number of pets',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1375,10 +1393,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: const Text(
+                child: Text(
                   'Save',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -1394,9 +1412,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
   Widget buildInternetSpeed() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 210,
@@ -1412,10 +1431,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Internet speed',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -1423,10 +1442,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
             const SizedBox(height: 20.0),
             Container(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 'Select your internet speed',
                 style: TextStyle(
-                  color: Color(0xFF414C57),
+                  color: textColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -1485,10 +1504,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: const Text(
+                child: Text(
                   'Save',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -1504,9 +1523,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
   Widget buildHobbies() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 287,
@@ -1522,10 +1542,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Hobbies',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -1537,10 +1557,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Hobby description',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1550,7 +1570,7 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                       width: 160,
                       height: 42,
                       child: TextField(
-                        controller: _hobbydescController,
+                        controller: _hobbiesController,
                         style: const TextStyle(color: Color(0xFF46A291)),
                         decoration: InputDecoration(
                           fillColor: const Color(
@@ -1582,10 +1602,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Hours pr. week',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1686,10 +1706,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: const Text(
+                child: Text(
                   'Save',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -1705,9 +1725,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
   Widget buildSleepSchedule() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.all(20),
         height: 210,
@@ -1723,10 +1744,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
         ),
         child: Column(
           children: <Widget>[
-            const Text(
+            Text(
               'Sleep schedule',
               style: TextStyle(
-                color: Color(0xFF414C57),
+                color: textColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -1738,10 +1759,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Sleep time',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1782,10 +1803,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Wake up time',
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -1845,10 +1866,10 @@ class _LivingSituationPageState extends State<LivingSituationPage> {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: const Text(
+                child: Text(
                   'Save',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),

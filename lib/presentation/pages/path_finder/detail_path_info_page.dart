@@ -1,7 +1,12 @@
+// ignore_for_file: depend_on_referenced_packages
+
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
 import 'package:next_life/constants.dart';
+import 'package:next_life/data/init_data.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class DetailPathInfoPage extends StatefulWidget {
   const DetailPathInfoPage({
@@ -17,18 +22,50 @@ class DetailPathInfoPage extends StatefulWidget {
 }
 
 class _DetailPathInfoPageState extends State<DetailPathInfoPage> {
+  String careerExplain = '';
   @override
   void initState() {
     super.initState();
+    getAnswerData();
   }
 
+Future<void> getAnswerData() async {
+    
+    var data = {
+      "prompt":sendData.survey,
+      "age":sendData.age,
+      "questionsAreAnsrwered":true,
+      "answersToQuestions":sendData.answer,
+      "generateLifePlan":false,
+      "lifePlanDataRequest":"",
+      "suggestedCarrer": sendData.current_job_title,
+      "careerIntroduce": true
+    };
+    const apiUrl =
+        "https://e5120pdd9j.execute-api.us-east-1.amazonaws.com/default/ynlAIControler";
+    final headers = {'Content-Type': 'application/json'};
+    final response = await http.post(Uri.parse(apiUrl),
+        headers: headers, body: jsonEncode(data));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      setState(() {
+        careerExplain = data['response'];
+       
+      });
+    } else {
+      safePrint('error occured. ${response.body}');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
+      
       return WillPopScope(
         child: Container(
           padding: const EdgeInsets.all(20.0),
@@ -54,10 +91,10 @@ class _DetailPathInfoPageState extends State<DetailPathInfoPage> {
                     Container(
                       padding: const EdgeInsets.only(top: 5),
                       alignment: Alignment.center,
-                      child: const Text(
+                      child: Text(
                         'Selected path',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
@@ -73,16 +110,19 @@ class _DetailPathInfoPageState extends State<DetailPathInfoPage> {
                         width: 310,
                         height: 54,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE5F0EE),
+                          color: const Color(0xFF237A6A),
                           shape: BoxShape.rectangle,
-                          border: null,
+                          border: Border.all(
+                            color: const Color(0xFF84C1B6),
+                            width: 1,
+                          ),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         alignment: Alignment.center,
-                        child: const Text(
-                          'Computer scientist',
+                        child: Text(
+                          sendData.current_job_title,
                           style: TextStyle(
-                            color: Color(0xFF237A6A),
+                            color: textColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                           ),
@@ -92,20 +132,19 @@ class _DetailPathInfoPageState extends State<DetailPathInfoPage> {
                     const SizedBox(height: 20.0),
                     Container(
                       alignment: Alignment.centerLeft,
-                      child: const Text(
+                      child: Text(
                         'Info about path',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10.0),
-                    const Text(
-                      'Lorem ipsum dolor sit amet consectetur. Aliquam dictumst id cursus morbi nulla in in. Platea in aliquam ac netus convallis eu etiam et elementum. Commodo duis interdum nunc cras imperdiet. Massa pellentesque habitant tellus luctus justo.',
+                    Text(
+                      careerExplain,
                       style: TextStyle(
-                        color: Color(0xFF414C57),
+                        color: textColor,
                         fontSize: 14,
                       ),
                     ),

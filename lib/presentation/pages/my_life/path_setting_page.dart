@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:next_life/pages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -46,9 +46,10 @@ class _PathSettingPageState extends State<PathSettingPage> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return WillPopScope(
         child: Container(
           padding: const EdgeInsets.all(20.0),
@@ -88,10 +89,10 @@ class _PathSettingPageState extends State<PathSettingPage> {
 
                     Container(
                       alignment: Alignment.center,
-                      child: const Text(
+                      child: Text(
                         'Selected path',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -124,7 +125,7 @@ class _PathSettingPageState extends State<PathSettingPage> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: buildCategoryItems(),
+                  children: buildCategoryItems(textColor),
                 ),
               ),
               const SizedBox(height: 20.0),
@@ -163,7 +164,7 @@ class _PathSettingPageState extends State<PathSettingPage> {
     });
   }
 
-  List<Widget> buildCategoryItems() {
+  List<Widget> buildCategoryItems(Color textColor) {
     return List<Widget>.generate(
       items.length,
       (index) {
@@ -193,7 +194,7 @@ class _PathSettingPageState extends State<PathSettingPage> {
               style: TextStyle(
                 color: _activeItemIdx == index
                     ? Colors.white
-                    : const Color(0xFF414C57),
+                    : textColor,
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),

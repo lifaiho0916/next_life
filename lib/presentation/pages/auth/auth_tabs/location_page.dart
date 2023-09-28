@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:next_life/data/init_data.dart';
-import 'package:next_life/transfer.dart';
 
 class ZipCodePage extends StatefulWidget {
   final Function goToNextPage;
@@ -70,7 +69,6 @@ class _ZipCodePageState extends State<ZipCodePage> {
           GestureDetector(
             onTap: () async {
               sendData.location = location.text;
-              sendUserInfoToAWS();
               widget.goToNextPage();
             },
             child: Container(

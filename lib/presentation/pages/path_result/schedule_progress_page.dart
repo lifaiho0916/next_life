@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:next_life/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 
 class ScheduleProgressPage extends StatefulWidget {
@@ -25,9 +25,10 @@ class _ScheduleProgressPageState extends State<ScheduleProgressPage> {
     TimeOfDay endTime = const TimeOfDay(hour: 8, minute: 30);
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         decoration: BoxDecoration(
@@ -86,13 +87,13 @@ class _ScheduleProgressPageState extends State<ScheduleProgressPage> {
                     controller: scrollController,
                     child: Column(
                       children: <Widget>[
-                        buildTimeSchedule(startTime, endTime, ''),
-                        buildTimeSchedule(startTime, endTime, ''),
-                        buildTimeSchedule(startTime, endTime, ''),
-                        buildTimeSchedule(startTime, endTime, ''),
-                        buildTimeSchedule(startTime, endTime, ''),
-                        buildTimeSchedule(startTime, endTime, ''),
-                        buildTimeSchedule(startTime, endTime, ''),
+                        buildTimeSchedule(startTime, endTime, '',textColor),
+                        buildTimeSchedule(startTime, endTime, '',textColor),
+                        buildTimeSchedule(startTime, endTime, '',textColor),
+                        buildTimeSchedule(startTime, endTime, '',textColor),
+                        buildTimeSchedule(startTime, endTime, '',textColor),
+                        buildTimeSchedule(startTime, endTime, '',textColor),
+                        buildTimeSchedule(startTime, endTime, '',textColor),
                       ],
                     ),
                   ),
@@ -109,6 +110,7 @@ class _ScheduleProgressPageState extends State<ScheduleProgressPage> {
     TimeOfDay start,
     TimeOfDay end,
     String scheduleContent,
+    Color textColor
   ) {
     int diffTime = min(getDiffInMinutes(start, end), 250);
 
@@ -163,12 +165,12 @@ class _ScheduleProgressPageState extends State<ScheduleProgressPage> {
                         ),
                       ],
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 5, right: 5, bottom: 5),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5, right: 5, bottom: 5),
                       child: Text(
                         'Lorem ipsum dolor sit amet, consectetur adipi elit, sed do eiusmod',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                         ),
                       ),

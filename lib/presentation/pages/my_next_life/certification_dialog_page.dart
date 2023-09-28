@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:next_life/components.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 
 class CertificationDialogNextLifePage extends StatefulWidget {
@@ -32,9 +32,10 @@ class _CertificationDialogNextLifePageState extends State<CertificationDialogNex
   Widget buildContent() {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = themeMode == 0 ? Colors.black : Colors.white;
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         decoration: BoxDecoration(
@@ -52,10 +53,10 @@ class _CertificationDialogNextLifePageState extends State<CertificationDialogNex
                 Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(top: 5),
-                  child: const Text(
+                  child: Text(
                     'Certifications',
                     style: TextStyle(
-                      color: Color(0xFF414C57),
+                      color: textColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -88,10 +89,10 @@ class _CertificationDialogNextLifePageState extends State<CertificationDialogNex
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const Text(
+                          Text(
                             'Certification',
                             style: TextStyle(
-                              color: Color(0xFF414C57),
+                              color: textColor,
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                             ),
@@ -133,10 +134,10 @@ class _CertificationDialogNextLifePageState extends State<CertificationDialogNex
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const Text(
+                          Text(
                             'Year',
                             style: TextStyle(
-                              color: Color(0xFF414C57),
+                              color: textColor,
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                             ),

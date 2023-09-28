@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:next_life/pages.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -36,9 +36,10 @@ class _ThePathProfilePageState extends State<ThePathProfilePage> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child)
     {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode == 0 ? lightTheme
           .scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+      Color textColor = const Color(0xFF237A6A);
       return WillPopScope(
         child: Container(
           padding: const EdgeInsets.all(20.0),
@@ -78,10 +79,10 @@ class _ThePathProfilePageState extends State<ThePathProfilePage> {
 
                     Container(
                       alignment: Alignment.center,
-                      child: const Text(
+                      child: Text(
                         'Selected path',
                         style: TextStyle(
-                          color: Color(0xFF414C57),
+                          color: textColor,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -89,18 +90,18 @@ class _ThePathProfilePageState extends State<ThePathProfilePage> {
                       ),
                     ),
                     Container(
-                      width: 148,
+                      width: 200,
                       height: 37,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE5F0EE),
+                        color: backgroundColor,
                         shape: BoxShape.rectangle,
                         border: null,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       alignment: Alignment.center,
-                      child: const Text(
-                        'Computer scientist',
-                        style: TextStyle(
+                      child: Text(
+                        sendData.current_job_title,
+                        style: const TextStyle(
                           color: Color(0xFF237A6A),
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -114,7 +115,7 @@ class _ThePathProfilePageState extends State<ThePathProfilePage> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: buildCategoryItems(),
+                  children: buildCategoryItems(textColor),
                 ),
               ),
               const SizedBox(height: 20.0),
@@ -143,7 +144,11 @@ class _ThePathProfilePageState extends State<ThePathProfilePage> {
     });
   }
 
-  List<Widget> buildCategoryItems() {
+  List<Widget> buildCategoryItems(Color textColor) {
+    final themeMode = sendData.theme;
+    Color backgroundColor =
+    themeMode == 0 ? lightTheme.scaffoldBackgroundColor : darkTheme.scaffoldBackgroundColor;
+
     return List<Widget>.generate(
       items.length,
       (index) {
@@ -160,7 +165,7 @@ class _ThePathProfilePageState extends State<ThePathProfilePage> {
             decoration: BoxDecoration(
               color: _activeItemIdx == index
                   ? const Color(0xFF237A6A)
-                  : Colors.white,
+                  : backgroundColor,
               shape: BoxShape.rectangle,
               border: Border.all(
                 color: const Color(0xFF7EBEB2),
@@ -173,7 +178,7 @@ class _ThePathProfilePageState extends State<ThePathProfilePage> {
               style: TextStyle(
                 color: _activeItemIdx == index
                     ? Colors.white
-                    : const Color(0xFF414C57),
+                    : textColor,
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),

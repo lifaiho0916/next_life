@@ -1,13 +1,21 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:next_life/pages.dart';
 import 'package:next_life/constants.dart';
-import 'package:next_life/main.dart';
 import 'package:next_life/presentation/pages/drawer.dart';
+import 'package:next_life/presentation/pages/my_life/my_life_profile_page.dart';
+import 'package:next_life/presentation/pages/my_life/my_next_life_profile_page.dart';
 import 'package:next_life/presentation/pages/my_life/the_path_profile_page.dart';
 import 'package:next_life/presentation/pages/path_finder/path_personalized_plan_page.dart';
 import 'package:next_life/data/init_data.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class BasePage extends StatefulWidget {
   const BasePage({Key? key}) : super(key: key);
@@ -17,6 +25,7 @@ class BasePage extends StatefulWidget {
 }
 
 class _BasePageState extends State<BasePage> {
+  // int? _selectedProfileIdx;
   late List<int> _pageHistory;
   int _currentPageIndex = 0;
   final PageController _pageController = PageController();
@@ -36,7 +45,7 @@ class _BasePageState extends State<BasePage> {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       return Scaffold(
         drawer: const DrawerWidget(),
         key: scaffoldKey,
@@ -79,9 +88,9 @@ class _BasePageState extends State<BasePage> {
                   DetailPathInfoPage(onGoToPage: goToPage),
                   PathSettingPage(onGoToPage: goToPage),
                   PathPersonalizedPlanPage(onGoToPage: goToPage),
-                  // MyNextLifeProfilePage(onGoToPage: goToPage),
+                  MyNextLifeProfilePage(onGoToPage: goToPage),
                   ThePathProfilePage(onGoToPage: goToPage),
-                  // MyLifeProfilePage(onGoToPage: goToPage),
+                  MyLifeProfilePage(onGoToPage: goToPage),
                 ],
                 onPageChanged: (value) {
                   _currentPageIndex = value;
@@ -107,23 +116,30 @@ class _BasePageState extends State<BasePage> {
   Widget buildHeaderSection() {
     return Container(
       color: const Color(0xFF237A6A),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
     );
   }
 
   Widget? buildLeading() {
+    bool flag;
+    flag = sendData.curAvatarImage == "" ? false : File(sendData.curAvatarImage).existsSync() ? true : false;
     return Padding(
-      padding: const EdgeInsets.only(left: 15.0),
+      padding: const EdgeInsets.only(left: 15.0, top: 5),
       child: GestureDetector(
         onTap: () {
           // scaffoldKey.currentState?.openDrawer();
           goToPage(1);
         },
-        child: const CircleAvatar(
-          backgroundColor: Colors.white,
-          radius: 30,
-          backgroundImage: AssetImage('assets/meta/avatar.jpg'),
-        ),
+        child: !flag ? const CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: 45,
+                backgroundImage: AssetImage('assets/meta/avatar.jpg')
+            ):
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 45,
+              backgroundImage: FileImage(File(sendData.curAvatarImage)) 
+            ),
       ),
     );
   }
@@ -150,9 +166,9 @@ class _BasePageState extends State<BasePage> {
           goToPage(0);
         },
         child: Container(
-          margin: const EdgeInsets.only(right: 15.0, top: 5.0),
-          width: 95,
-          height: 37,
+          margin: const EdgeInsets.only(right: 5.0, top: 10.0),
+          width: 30,
+          height: 30,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: const Color(0xFF7EBEB2),
@@ -167,11 +183,52 @@ class _BasePageState extends State<BasePage> {
                 Icons.home_outlined,
                 color: Colors.white,
               ),
-              SizedBox(width: 10.0),
-              Text(
-                'Home',
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              )
+            ],
+          ),
+        ),
+      ),
+      GestureDetector(
+        onTap: () async {
+          final result = await Amplify.Auth.signOut();
+          if (result is CognitoCompleteSignOut) {
+            userId = '';
+            sendData.init();
+            Navigator.pushNamed(context, "/login");  
+            Fluttertoast.showToast(
+              msg: 'Sign out completed successfully.',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+            );
+          } else if (result is CognitoFailedSignOut) {
+            Fluttertoast.showToast(
+              msg: 'Signout Error.',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+            );
+          }
+        },
+        child: Container(
+          margin: const EdgeInsets.only(right: 15.0, top: 10.0),
+          width: 30,
+          height: 30,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: const Color(0xFF7EBEB2),
+            shape: BoxShape.rectangle,
+            border: Border.all(color: const Color(0xFF7EBEB2)),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
             ],
           ),
         ),

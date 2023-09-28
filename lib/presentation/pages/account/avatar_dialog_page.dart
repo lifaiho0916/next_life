@@ -1,12 +1,15 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, unused_local_variable
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:next_life/components.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:next_life/main.dart';
+import 'package:next_life/data/init_data.dart';
 import 'package:next_life/constants.dart';
+import 'dart:async';
+import 'package:next_life/transfer.dart';
 
 class AvatarDialogPage extends StatefulWidget {
   const AvatarDialogPage({Key? key}) : super(key: key);
@@ -17,28 +20,61 @@ class AvatarDialogPage extends StatefulWidget {
 
 class _AvatarDialogPageState extends State<AvatarDialogPage> {
 
-  String _avatarImagePath = "";
   final imagePicker = ImagePicker();
-  Future getImageFromGallery() async {
-    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
 
-    setState(() {
-      if (pickedFile != null) {
-        _avatarImagePath = pickedFile.path;
+  // Function to get an image from the gallery
+  Future<void> getImageFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      try {
+        sendData.curAvatarImage = pickedFile.path;
+        final result = await uploadUserImage();
+        if(result)
+        {
+          sendUserInfoToAWS();
+          // ignore: use_build_context_synchronously
+          Navigator.pushNamed(context, "/");
+        }
+      } catch (error) {
+        Fluttertoast.showToast(
+          msg: 'Error updating file. $error',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
       }
-    });
+    }
   }
 
-  //Image Picker function to get image from camera
-  Future getImageFromCamera() async {
-    final pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
+  // Function to capture an image from the camera
+  Future<void> getImageFromCamera() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
 
-    setState(() {
-      if (pickedFile != null) {
-        _avatarImagePath = pickedFile.path;
+    if (pickedFile != null) {
+      try {
+        sendData.curAvatarImage = pickedFile.path;
+        final result = await uploadUserImage();
+        if(result)
+        {
+          sendUserInfoToAWS();
+          // ignore: use_build_context_synchronously
+          Navigator.pushNamed(context, "/");
+        }
+
+      } catch (error) {
+        Fluttertoast.showToast(
+          msg: 'Error updating file. $error',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
       }
-    });
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     //Image Picker function to get image from gallery
@@ -51,7 +87,7 @@ class _AvatarDialogPageState extends State<AvatarDialogPage> {
 
   Widget buildContent() {
     return Consumer(builder: (context, ref, child){
-      final themeMode = ref.watch(themeModeProvider);
+      final themeMode = sendData.theme;
       Color backgroundColor = themeMode==0? lightTheme.scaffoldBackgroundColor:darkTheme.scaffoldBackgroundColor;
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -70,7 +106,7 @@ class _AvatarDialogPageState extends State<AvatarDialogPage> {
                 Container(
                   margin: const EdgeInsets.only(top: 10),
                   alignment: Alignment.center,
-                  child: _avatarImagePath == ""? const CircleAvatar(
+                  child: sendData.curAvatarImage == ""? const CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: 45,
                       backgroundImage: AssetImage('assets/meta/avatar.jpg')
@@ -78,7 +114,7 @@ class _AvatarDialogPageState extends State<AvatarDialogPage> {
                   CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 45,
-                    backgroundImage: FileImage(File(_avatarImagePath)),
+                    backgroundImage: FileImage(File(sendData.curAvatarImage)),
                   ),
                 ),
                 Container(
@@ -126,7 +162,7 @@ class _AvatarDialogPageState extends State<AvatarDialogPage> {
                             child: const Text(
                               'Upload picture',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Color.fromRGBO(255, 255, 255, 1),
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                               ),
